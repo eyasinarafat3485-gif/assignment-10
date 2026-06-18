@@ -67,7 +67,7 @@ const Navbar = () => {
                         <li key={link.href}>
                             <Link
                                 href={link.href}
-                                className={`font-semibold text-lg transition ${pathname === link.href ? 'text-red-500' : 'text-white hover:text-red-400'
+                                className={`font-semibold text-lg transition ${pathname === link.href ? 'text-red-500' : 'text-white hover:border-b-2 border-red-400'
                                     }`}
                             >
                                 {link.name}
@@ -84,7 +84,7 @@ const Navbar = () => {
                         <div className='relative'>
                             <button onClick={() => setProfileOpen(!profileOpen)}>
                                 <Avatar>
-                                    <Avatar.Image src={user?.image} name={user?.name} />
+                                    <Avatar.Image src={user?.image} name={user?.name} className='cursor-pointer'/>
                                     <Avatar.Fallback>{user?.name?.[0]}</Avatar.Fallback>
                                 </Avatar>
                             </button>
