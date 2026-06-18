@@ -4,48 +4,56 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button, Input } from '@heroui/react';
 import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
-import { BiShieldQuarter, BiPlus } from 'react-icons/bi';
+import { BiShieldQuarter } from 'react-icons/bi';
 import { authClient } from '@/lib/auth-client';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function LoginSection() {
   const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
+
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-//   const handleLogin = (e) => {
-//     e.preventDefault();
-//     // লগইন মেথড লজিক এখানে লিখুন
-//   };
-const onSubmit = async (e) => {
-        e.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(e.currentTarget)
-        const user = Object.fromEntries(formData.entries())
-        console.log(user);
+    const formData = new FormData(e.currentTarget);
+    const userData = Object.fromEntries(formData.entries());
 
-        const { data, error } = await authClient.signIn.email({
-            email: user.email,
-            password: user.password,
-        })
-        if (data) {
-            toast.success("Succesfully login done");
-                // window.location.href = callbackUrl;
-        }
-        if (error) {
-            toast.error(error.message)
-        }
+    const { data, error } = await authClient.signIn.email({
+      email: userData.email,
+      password: userData.password,
+    });
+
+    if (error) {
+      toast.error(error.message || "Login failed");
+      return;
     }
 
-  return (
-    <section className="w-full py-16 bg-zinc-950/70 backdrop-blur-md text-white font-sans  flex items-center justify-center relative overflow-hidden">
-      
-      {/* Background gradient like the image */}
-      <div className="absolute inset-0"/>
+    if (data) {
+      toast.success("Successfully logged in!");
 
-      {/* Main Container - Dark Card Style like Image */}
+      // Dynamic redirect based on user role
+      const role = data.user?.role || 'donor';
+      const dashboardPath = `/dashboard/${role}`;
+
+      // Redirect to role-based dashboard
+      router.push(dashboardPath);
+      router.refresh(); // Optional: to refresh session if needed
+    }
+  };
+
+  return (
+    <section className="w-full py-16 bg-zinc-950/70 backdrop-blur-md text-white font-sans flex items-center justify-center relative overflow-hidden">
+      
+      {/* Background gradient */}
+      <div className="absolute inset-0" />
+
+      {/* Main Container */}
       <div className="max-w-5xl w-full bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 min-h-[680px] border border-white/5 relative z-10">
         
-        {/* Left Pane - Branding (Image Style) */}
+        {/* Left Pane - Branding */}
         <div className="md:col-span-5 bg-zinc-950/70 p-10 flex flex-col justify-between relative text-white">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
@@ -84,7 +92,7 @@ const onSubmit = async (e) => {
           </div>
         </div>
 
-        {/* Right Pane: Login Form (Image Style) */}
+        {/* Right Pane: Login Form */}
         <div className="md:col-span-7 p-10 md:p-14 flex flex-col justify-center bg-zinc-900">
           <div className="w-full max-w-md mx-auto space-y-8">
             
@@ -106,7 +114,6 @@ const onSubmit = async (e) => {
                   </div>
                   <Input
                     type="email"
-                    id="donor_login_email"
                     name="email"
                     autoComplete="off"
                     placeholder="name@example.com"
@@ -134,7 +141,6 @@ const onSubmit = async (e) => {
                   </div>
                   <Input
                     type={isVisible ? "text" : "password"}
-                    id="donor_login_password"
                     name="password"
                     autoComplete="current-password"
                     placeholder="••••••••"
@@ -154,7 +160,6 @@ const onSubmit = async (e) => {
               </div>
 
               {/* Sign In Button */}
-              <Link href='/'>
               <Button
                 type="submit"
                 className="w-full h-14 bg-red-600 hover:bg-red-700 text-white font-bold text-base rounded-2xl shadow-lg shadow-red-900/30 transition-all mt-4"
@@ -163,7 +168,6 @@ const onSubmit = async (e) => {
                 SIGN IN TO DASHBOARD
                 <FiArrowRight className="ml-2" />
               </Button>
-              </Link>
 
               <p className="text-center text-zinc-400 text-sm pt-3">
                 New to LifeStream?{' '}

@@ -29,7 +29,7 @@ export default function DashboardSideBar() {
     const donorNavLinks = [
         { icon: House, href: '/dashboard/donor', label: "Dashboard" },
         { icon: FaUser, href: '/dashboard/donor/my-profile', label: "My Profile" },
-        { icon: FaHand, href: '/dashboard/donor/my-requests', label: "MY |Requests" },
+        { icon: FaHand, href: '/dashboard/donor/my-requests', label: "MY Requests" },
         { icon: FaEdit, href: '/dashboard/donor/cancle-request', label: "Cancle Request" }
     ];
 
@@ -70,12 +70,12 @@ export default function DashboardSideBar() {
 
     return (
         <>
-            <aside className="hidden w-54 shrink-0 border-r bg-zinc-900/50 min-h-screen py-4 pl-6 pr-4 lg:block">
+            <aside className="hidden w-48 shrink-0 border-r bg-zinc-950/50 min-h-screen py-4 pl-6 pr-4 lg:block">
                 {navContent}
             </aside>
             <Drawer>
                 <Button variant="secondary" className="lg:hidden bg-zinc-950/70 text-white">
-                    <TbLayoutSidebarLeftCollapse className="pl-2 w-10" size="25" />
+                    <TbLayoutSidebarLeftCollapse className="pl-2  w-10" size="25" />
                     Menu
                 </Button>
                 <Drawer.Backdrop>
@@ -83,7 +83,7 @@ export default function DashboardSideBar() {
                         <Drawer.Dialog className="  bg-zinc-950/70 text-white">
                             <Drawer.CloseTrigger />
                             <Drawer.Header>
-                                <Drawer.Heading className=" bg-zinc-950/70 text-white">Navigation</Drawer.Heading>
+                                <Drawer.Heading className=" bg-zinc-950/70 text-white text-lg">Dashboard Sidebar</Drawer.Heading>
                             </Drawer.Header>
                             <Drawer.Body>
                                 {navContent}
@@ -95,3 +95,5 @@ export default function DashboardSideBar() {
         </>
     );
 }
+
+
