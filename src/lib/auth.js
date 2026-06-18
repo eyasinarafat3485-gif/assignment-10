@@ -13,4 +13,45 @@ export const auth = betterAuth({
    emailAndPassword: { 
     enabled: true, 
   },
+   user: {
+        additionalFields: {
+
+            phone: {
+                type: "string",
+                required: false
+            },
+
+            gender: {
+                type: "string",
+                required: false
+            },
+
+            role: {
+                type: "string",
+                required: false,
+                role: "donor"
+            },
+
+            division: {
+                type: "string",
+                required: false
+            },
+
+            district: {
+                type: "string",
+                required: false
+            },
+
+            upazila: {
+                type: "string",
+                required: false
+            },
+
+            bloodGroup: {
+                type: "string",
+                required: false
+            }
+
+        }
+    }
 });

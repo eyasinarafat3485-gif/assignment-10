@@ -154,7 +154,7 @@ const onSubmit = async (e) => {
               </div>
 
               {/* Sign In Button */}
-              <Link href='/dashboard'>
+              <Link href='/'>
               <Button
                 type="submit"
                 className="w-full h-14 bg-red-600 hover:bg-red-700 text-white font-bold text-base rounded-2xl shadow-lg shadow-red-900/30 transition-all mt-4"
