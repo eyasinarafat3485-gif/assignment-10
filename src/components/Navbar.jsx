@@ -15,6 +15,7 @@ const Navbar = () => {
     const { data: session, isPending } = authClient.useSession();
     const user = session?.user;
     const isLoading = isPending;
+    const pathname = usePathname();
 
     const handleSignOut = async () => {
         await authClient.signOut();
@@ -25,9 +26,12 @@ const Navbar = () => {
     const [profileOpen, setProfileOpen] = useState(false);
     const desktopProfileRef = useRef(null);
 
-    const pathname = usePathname();
+    // Dynamic Dashboard URL based on user role
+    const dashboardHref = user?.role 
+        ? `/dashboard/${user.role}` 
+        : '/dashboard/donor';
 
-    // বাইরে ক্লিক করলে ডেক্সটপ প্রোফাইল ড্রপডাউন বন্ধ করার জন্য
+    // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (desktopProfileRef.current && !desktopProfileRef.current.contains(event.target)) {
@@ -52,12 +56,12 @@ const Navbar = () => {
         : [
             { name: 'Home', href: '/' },
             { name: 'Donation Requests', href: '/donation-requests' },
-            { name: 'Search Donor ', href: '/search-donor' },
+            { name: 'Search Donor', href: '/search-donor' },
         ];
 
     return (
         <nav className='sticky z-50 w-full bg-zinc-950/70 backdrop-blur-md'>
-            <div className='max-w-7xl mx-auto h-20 px-5 lg:px-14 flex justify-between items-center'>
+            <div className='max-w-7xl mx-auto h-20 px-5 lg:px-10 flex justify-between items-center'>
 
                 {/* LOGO */}
                 <Link href="/" className='flex items-center gap-2'>
@@ -79,8 +83,7 @@ const Navbar = () => {
                         <li key={link.href}>
                             <Link
                                 href={link.href}
-                                className={`font-semibold text-lg transition ${pathname === link.href ? 'text-red-500' : 'text-white hover:border-b-2 border-red-400'
-                                    }`}
+                                className={`font-semibold text-lg transition ${pathname === link.href ? 'text-red-500' : 'text-white hover:border-b-2 border-red-400'}`}
                             >
                                 {link.name}
                             </Link>
@@ -111,27 +114,27 @@ const Navbar = () => {
                                         transition={{ duration: 0.2, ease: "easeOut" }}
                                         className='absolute right-0 mt-3 w-56 p-2 rounded-2xl bg-zinc-950/85 backdrop-blur-xl border border-zinc-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-50 origin-top-right'
                                     >
-                                        {/* USER INFO CARD (Desktop) */}
+                                        {/* USER INFO */}
                                         <div className='flex items-center gap-3 p-3 bg-zinc-900/50 rounded-xl border border-zinc-900 mb-1.5'>
                                             <Avatar size="sm" className="ring-2 ring-red-500/20">
                                                 <Avatar.Image src={user?.image} name={user?.name} />
                                                 <Avatar.Fallback>{user?.name?.[0]}</Avatar.Fallback>
                                             </Avatar>
                                             <div className='flex flex-col min-w-0'>
-                                                <p className='text-xs font-bold text-zinc-200 truncate'>{user?.name || 'User Profile'}</p>
+                                                <p className='text-xs font-bold text-zinc-200 truncate'>{user?.name}</p>
                                                 <p className='text-[10px] text-zinc-500 truncate'>{user?.email}</p>
                                             </div>
                                         </div>
-                                        
+
                                         <hr className='border-zinc-900 my-1 mx-2' />
 
                                         <ul className='flex flex-col gap-1'>
                                             <li>
                                                 <Link
-                                                    href="/dashboard"
+                                                    href={dashboardHref}
                                                     onClick={() => setProfileOpen(false)}
                                                     className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${
-                                                        pathname === '/dashboard'
+                                                        pathname.startsWith('/dashboard')
                                                             ? 'text-red-500 bg-red-500/10 border border-red-500/20'
                                                             : 'text-zinc-300 hover:text-white hover:bg-zinc-900/50'
                                                     }`}
@@ -183,7 +186,6 @@ const Navbar = () => {
                         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                         className='absolute right-5 top-[calc(100%+12px)] w-56 p-2 rounded-2xl bg-zinc-950/85 backdrop-blur-xl border border-zinc-900 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-50 origin-top-right'
                     >
-                        {/* USER PROFILE CARD INSIDE MOBILE DROPDOWN */}
                         {user && (
                             <>
                                 <div className='flex items-center gap-3 p-3 bg-zinc-900/50 rounded-xl border border-zinc-900 mb-1.5'>
@@ -192,7 +194,7 @@ const Navbar = () => {
                                         <Avatar.Fallback>{user?.name?.[0]}</Avatar.Fallback>
                                     </Avatar>
                                     <div className='flex flex-col min-w-0'>
-                                        <p className='text-xs font-bold text-zinc-200 truncate'>{user?.name || 'User Profile'}</p>
+                                        <p className='text-xs font-bold text-zinc-200 truncate'>{user?.name}</p>
                                         <p className='text-[10px] text-zinc-500 truncate'>{user?.email}</p>
                                     </div>
                                 </div>
@@ -210,7 +212,7 @@ const Navbar = () => {
                                             onClick={() => setIsOpen(false)}
                                             className={`block px-4 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-200 ${
                                                 isActive 
-                                                    ? 'text-red-500 bg-red-500/10 border border-red-500/20 shadow-[inset_0_1px_1px_rgba(239,68,68,0.1)]' 
+                                                    ? 'text-red-500 bg-red-500/10 border border-red-500/20' 
                                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
                                             }`}
                                         >
@@ -222,18 +224,14 @@ const Navbar = () => {
 
                             <hr className='border-zinc-900 my-1.5 mx-2' />
 
-                            {isLoading ? (
-                                <div className='flex justify-center py-3'>
-                                    <Spinner size="sm" color="danger" />
-                                </div>
-                            ) : user ? (
+                            {user && (
                                 <>
                                     <li>
                                         <Link
-                                            href="/dashboard"
+                                            href={dashboardHref}
                                             onClick={() => setIsOpen(false)}
                                             className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${
-                                                pathname === '/dashboard'
+                                                pathname.startsWith('/dashboard')
                                                     ? 'text-red-500 bg-red-500/10 border border-red-500/20'
                                                     : 'text-zinc-300 hover:text-white hover:bg-zinc-900/50'
                                             }`}
@@ -253,7 +251,9 @@ const Navbar = () => {
                                         </button>
                                     </li>
                                 </>
-                            ) : (
+                            )}
+
+                            {!user && (
                                 <div className="grid grid-cols-2 gap-2 p-1 pt-1.5">
                                     <Link 
                                         href="/login" 
