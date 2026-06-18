@@ -40,6 +40,7 @@ const ProfilePage = () => {
 
   const profile = {
     name: user?.name || 'Donor Name',
+    image: user?.image || 'Donor Image',
     email: user?.email || 'donor@gmail.com',
     district: user?.district || 'Bandarban',
     upazila: user?.upazila || 'Lama',
@@ -94,10 +95,7 @@ const ProfilePage = () => {
             <div className="relative h-40 bg-gradient-to-r rounded-md from-red-950 via-rose-900 to-red-600">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_30%)]" />
               <div className="absolute -bottom-14 left-6">
-                <Avatar
-                  name={profile?.name}
-                  className="h-28 w-28 border-4 border-zinc-950 bg-white text-2xl font-bold text-red-500"
-                />
+                <img src={profile?.image} alt={profile?.name} className="h-28 w-28 border-4 border-zinc-950 rounded-3xl bg-white text-2xl font-bold text-red-500"/>
               </div>
 
               <div className="absolute right-6 top-6 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-center backdrop-blur-md">
