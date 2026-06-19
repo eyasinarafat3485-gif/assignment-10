@@ -3,16 +3,18 @@ import { useSession } from '@/lib/auth-client';
 import React from 'react';
 
 const AdminHomePage = () => {
-    const {data: session, isPending} = useSession();
-    if(isPending){
+    const { data: session, isPending } = useSession();
+    if (isPending) {
         return <div>Loading...</div>
     }
     const user = session?.user;
     console.log(user, isPending);
     return (
         <div className='ml-5'>
-            
-             <h1 className='text-2xl md:text-5xl font-bold text-white'>
+            <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
+                {user?.role}
+            </h2>
+            <h1 className='text-2xl md:text-5xl font-bold text-white'>
                 Welcome, <span className='text-red-500'>
                     {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ''}
                 </span>!

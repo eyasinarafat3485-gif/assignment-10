@@ -8,13 +8,18 @@ const AdminProfilePage = () => {
         const user = session?.user;
         console.log(user, isPending);
     return (
-        <div>
-            <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
-                {user?.role}
-            </h2>
-            <ProfilePage />
-        </div>
-    );
+  <div className="h-full flex flex-col overflow-hidden">
+
+    <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
+      {user?.role}
+    </h2>
+
+    <div className="flex-1 overflow-hidden">
+      <ProfilePage />
+    </div>
+
+  </div>
+);
 };
 
 export default AdminProfilePage;

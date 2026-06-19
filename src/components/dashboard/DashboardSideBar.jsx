@@ -22,7 +22,7 @@ export default function DashboardSideBar() {
         { icon: House, href: '/dashboard/volunteer', label: "Dashboard" },
         { icon: FaUser, href: '/dashboard/volunteer/my-profile', label: "My Profile" },
         { icon: FaHand, href: '/dashboard/volunteer/my-requests', label: "MY Requests" },
-        { icon: FaEdit, href: '/dashboard/volunteer/cancle-request', label: "Cancle Request" },
+        { icon: FaEdit, href: '/dashboard/volunteer/create-request', label: "Create Request" },
         { icon: FaUsers, href: '/dashboard/volunteer/public-requests', label: "Public Requests" }
     ];
 

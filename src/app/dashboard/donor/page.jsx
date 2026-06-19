@@ -4,11 +4,8 @@ import React from 'react';
 
 const DonorHomePage = () => {
     const { data: session, isPending } = useSession();
-    if (isPending) {
-        return <div>Loading...</div>
-    }
     const user = session?.user;
-    console.log(user);
+    console.log(user, isPending);
 
     return (
         <div className='ml-5'>

@@ -1,9 +1,8 @@
 'use client'
-import ProfilePage from '@/components/dashboard/ProfilePage';
 import { useSession } from '@/lib/auth-client';
 import React from 'react';
 
-const VolunteerMyRequestsPage = () => {
+const PublicRequestsPage = () => {
     const { data: session, isPending } = useSession();
     const user = session?.user;
     console.log(user, isPending);
@@ -16,4 +15,4 @@ const VolunteerMyRequestsPage = () => {
     );
 };
 
-export default VolunteerMyRequestsPage;
+export default PublicRequestsPage;
