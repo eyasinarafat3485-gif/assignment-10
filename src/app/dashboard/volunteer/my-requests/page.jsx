@@ -3,7 +3,7 @@ import ProfilePage from '@/components/dashboard/ProfilePage';
 import { useSession } from '@/lib/auth-client';
 import React from 'react';
 
-const AdminProfilePage = () => {
+const MyRequestsPage = () => {
      const {data: session, isPending} = useSession();
         const user = session?.user;
         console.log(user, isPending);
@@ -17,4 +17,4 @@ const AdminProfilePage = () => {
     );
 };
 
-export default AdminProfilePage;
+export default MyRequestsPage;

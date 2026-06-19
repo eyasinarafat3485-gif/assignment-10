@@ -4,15 +4,19 @@ import React from 'react';
 
 const VolunteerHomePage = () => {
     const {data: session, isPending} = useSession();
-    if(isPending){
-        return <div>Loading...</div>
-    }
     const user = session?.user;
-    console.log(user);
+    console.log(user, isPending);
     return (
-        <div>
-            <h1 className='text-2xl md:text-5xl font-bold text-white'>Welcome, {user?.name}</h1>
-            <h2>Volunteer Home Page</h2>
+        <div className='ml-5'>
+             <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
+                {user?.role}
+            </h2>
+             <h1 className='text-2xl md:text-5xl font-bold text-white'>
+                Welcome, <span className='text-red-500'>
+                    {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ''}
+                </span>!
+            </h1>
+            <p className='text-lg mt-2'>A single blood donation can save up to three lives.</p>
         </div>
     );
 };

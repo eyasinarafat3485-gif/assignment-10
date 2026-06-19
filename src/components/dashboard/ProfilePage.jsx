@@ -1,7 +1,11 @@
+
+
+
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSession } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 import { Card, Chip } from '@heroui/react';
 import {
   FiMapPin,
@@ -12,15 +16,21 @@ import {
   FiCheck,
   FiX,
   FiEdit3,
+  FiCamera,
 } from 'react-icons/fi';
 import { updateUserInfo } from '@/lib/actions/users';
 import { toast } from 'react-toastify';
 
 const ProfilePage = () => {
-  const { data: session, isPending } = useSession();
 
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
   // Edit Mode state tracking
   const [isEditing, setIsEditing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false); // ইমেজ আপলোডিং স্টেট
+
+  // Hidden file input-এর জন্য রেফ
+  const fileInputRef = useRef(null);
 
   // Form input state
   const [formData, setFormData] = useState({
@@ -65,52 +75,96 @@ const ProfilePage = () => {
   // Input change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  // 🔵 Form Submit / Save handler (API কল যুক্ত করা হয়েছে)
+  // 🔥 ImgBB Image Upload Handler
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // ফাইল সাইজ ৫MB ভ্যালিডেশন
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size must be up to 5MB");
+      return;
+    }
+
+    setIsUploading(true);
+    const imgbbFormData = new FormData();
+    imgbbFormData.append("image", file);
+
+    try {
+      const IMGBBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
+      
+      if (!IMGBBB_API_KEY) {
+        toast.error('Image upload API key is missing.');
+        return;
+      }
+
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBBB_API_KEY}`, {
+        method: "POST",
+        body: imgbbFormData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // সফলভাবে আপলোড হলে সাময়িকভাবে স্টেট আপডেট হবে
+        setFormData((prev) => ({ ...prev, image: data.data.url }));
+        toast.success("Image uploaded successfully! Click Save to keep changes.");
+      } else {
+        const errMsg = data.error?.message || "Failed to upload image.";
+        toast.error(`ImgBB Error: ${errMsg}`);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Network error uploading image.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   const handleSave = async () => {
     try {
       if (!session?.user?.id) {
-        alert("User ID missing");
+        toast.error("User ID missing");
         return;
       }
 
       const updateData = {
-        id: session.user.id, // MUST
+        id: session.user.id,
         name: formData.name,
         bloodGroup: formData.bloodGroup,
         district: formData.district,
         upazila: formData.upazila,
-        image: formData.image,
+        image: formData.image, // নতুন ছবির URL ডাটাবেজে যাবে
         status: formData.status,
       };
 
       const result = await updateUserInfo(updateData);
 
       if (result.success) {
-        toast.success("Profile updated successfully!")
-        // alert("Profile updated successfully!");
-
+        toast.success("Profile updated successfully!");
         setIsEditing(false);
 
-        // 🔥 IMPORTANT: UI instantly update without reload
         setFormData((prev) => ({
           ...prev,
           ...updateData,
         }));
 
+        // 🔥 নেভবার এবং পুরো অ্যাপের সার্ভার ডাটা ইনস্ট্যান্ট আপডেট করার ম্যাজিক লাইন
+        router.refresh();
+        
       } else {
-        alert(result.message || "Update failed");
+        toast.error(result.message || "Update failed");
       }
 
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      toast.error("Something went wrong");
     }
   };
 
@@ -123,7 +177,8 @@ const ProfilePage = () => {
         district: session.user.district || 'Bandarban',
         upazila: session.user.upazila || 'Lama',
         email: session.user.email || 'donor@gmail.com',
-        image: session.user.image || null,
+        image: session.user.image || "",
+        status: session.user.status || 'Active',
       });
     }
     setIsEditing(false);
@@ -133,7 +188,7 @@ const ProfilePage = () => {
     <div className="min-h-screen">
       <div className="mx-auto ml-5">
         <h2 className="text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase">
-          {formData.name}
+          {formData.role}
         </h2>
         <div className="my-8 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
@@ -150,12 +205,14 @@ const ProfilePage = () => {
               <div className="flex gap-2">
                 <button
                   onClick={handleSave}
-                  className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition"
+                  disabled={isUploading}
+                  className={`flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl text-sm transition ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
-                  <FiCheck /> Save
+                  <FiCheck /> {isUploading ? 'Uploading...' : 'Save'}
                 </button>
                 <button
                   onClick={handleCancel}
+                  disabled={isUploading}
                   className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white font-semibold rounded-xl text-sm transition"
                 >
                   <FiX /> Cancel
@@ -176,12 +233,38 @@ const ProfilePage = () => {
           <Card className="overflow-hidden border rounded-md border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl lg:col-span-2">
             <div className="relative h-40 bg-gradient-to-r rounded-md from-red-950 via-rose-900 to-red-600">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_30%)]" />
-              <div className="absolute -bottom-14 left-6">
-                <img
-                  src={formData.image || 'https://via.placeholder.com/150'}
-                  alt={formData.name}
-                  className="h-28 w-28 border-4 border-zinc-950 rounded-3xl bg-white text-2xl font-bold text-red-500 object-cover"
-                />
+              
+              {/* Profile Image Component with Edit Option */}
+              <div className="absolute -bottom-14 left-6 group">
+                <div className="relative h-28 w-28">
+                  <img
+                    src={formData.image || 'https://via.placeholder.com/150'}
+                    alt={formData.name}
+                    className={`h-full w-full border-4 border-zinc-950 rounded-3xl bg-white text-2xl font-bold text-red-500 object-cover ${isUploading ? 'opacity-40 animate-pulse' : ''}`}
+                  />
+                  
+                  {/* শুধুমাত্র Edit Mode চালু থাকলে ক্যামেরার আইকনটি আসবে */}
+                  {isEditing && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploading}
+                        className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 rounded-3xl text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+                      >
+                        <FiCamera size={22} className="mb-1" />
+                        <span className="text-[10px] font-bold uppercase">Change</span>
+                      </button>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleImageChange}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                    </>
+                  )}
+                </div>
               </div>
 
               <div className="absolute right-6 top-6 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-center backdrop-blur-md">
@@ -219,7 +302,6 @@ const ProfilePage = () => {
                   </div>
                   <div className="mt-3 flex items-center gap-2">
                     <FiShield className="text-emerald-400" />
-
                     <span className="text-sm font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
                       {formData.status}
                     </span>
@@ -233,7 +315,7 @@ const ProfilePage = () => {
 
               <div className="my-4 h-[1px] w-full bg-white/10" />
 
-              {/* Editable Form Fields / InfoBox Grid */}
+              {/* Editable Form Fields */}
               <div className="grid gap-4 md:grid-cols-2">
                 <InfoBox
                   icon={<FiUser />}
@@ -243,22 +325,12 @@ const ProfilePage = () => {
                   isEditing={isEditing}
                   onChange={handleChange}
                 />
-                {/* <InfoBox
-                  icon={<FiMail />}
-                  label="Email Address (Not Changeable)"
-                  name="email"
-                  value={formData.email}
-                  isEditing={isEditing}
-                  disabled={true}
-                  onChange={handleChange}
-                /> */}
-
                 <InfoBox
                   icon={<FiMail />}
                   label="Email Address (Not Changeable)"
                   name="email"
                   value={formData.email}
-                  isEditing={false}   // 👈 IMPORTANT (force disable edit)
+                  isEditing={false}
                   disabled={true}
                 />
                 <InfoBox
@@ -329,7 +401,7 @@ const ProfilePage = () => {
   );
 };
 
-// Modified InfoBox Component to support Inputs (Pure JS)
+// Modified InfoBox Component to support Inputs
 const InfoBox = ({ icon, label, name, value, isEditing, disabled = false, onChange }) => {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4 transition duration-300 hover:border-red-500/30 hover:bg-white/10">
@@ -345,8 +417,9 @@ const InfoBox = ({ icon, label, name, value, isEditing, disabled = false, onChan
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={`w-full bg-zinc-900 border ${disabled ? 'border-zinc-800 text-zinc-500 cursor-not-allowed' : 'border-white/20 text-white focus:border-red-500'
-            } rounded-xl px-3 py-1.5 text-base font-medium outline-none transition`}
+          className={`w-full bg-zinc-900 border ${
+            disabled ? 'border-zinc-800 text-zinc-500 cursor-not-allowed' : 'border-white/20 text-white focus:border-red-500'
+          } rounded-xl px-3 py-1.5 text-base font-medium outline-none transition`}
         />
       ) : (
         <p className="text-base font-semibold text-white px-1 py-1.5">{value}</p>

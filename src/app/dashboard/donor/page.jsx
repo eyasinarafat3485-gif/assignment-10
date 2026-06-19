@@ -13,7 +13,7 @@ const DonorHomePage = () => {
     return (
         <div className='ml-5'>
             <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
-                {user?.name}
+                {user?.role}
             </h2>
             <h1 className='text-2xl md:text-5xl font-bold text-white'>
                 Welcome, <span className='text-red-500'>

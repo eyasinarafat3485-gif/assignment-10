@@ -6,14 +6,14 @@ const client = new MongoClient(process.env.MONGO_DB_URI);
 const db = client.db(process.env.AUTH_DB_NAME);
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, {
-    // Optional: if you don't provide a client, database transactions won't be enabled.
-    client
-  }),
-   emailAndPassword: { 
-    enabled: true, 
-  },
-   user: {
+    database: mongodbAdapter(db, {
+        // Optional: if you don't provide a client, database transactions won't be enabled.
+        client
+    }),
+    emailAndPassword: {
+        enabled: true,
+    },
+    user: {
         additionalFields: {
 
             phone: {
@@ -50,6 +50,10 @@ export const auth = betterAuth({
             bloodGroup: {
                 type: "string",
                 required: false
+            },
+            status: {
+                type: String,
+                default: "Active"
             }
 
         }

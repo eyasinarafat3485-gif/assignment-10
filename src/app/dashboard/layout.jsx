@@ -20,6 +20,8 @@ export default function DashboardLayout({ children }) {
   )
 }
 
+// class="text-xl text-red-500 font-bold mt-0 mr-0
+//  text-right uppercase"
 
 // 'use client';
 
