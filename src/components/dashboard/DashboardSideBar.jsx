@@ -30,7 +30,7 @@ export default function DashboardSideBar() {
         { icon: House, href: '/dashboard/donor', label: "Dashboard" },
         { icon: FaUser, href: '/dashboard/donor/my-profile', label: "My Profile" },
         { icon: FaHand, href: '/dashboard/donor/my-requests', label: "MY Requests" },
-        { icon: FaEdit, href: '/dashboard/donor/cancle-request', label: "Cancle Request" }
+        { icon: FaEdit, href: '/dashboard/donor/create-request', label: "Create Request" }
     ];
 
     const adminNavLinks = [
