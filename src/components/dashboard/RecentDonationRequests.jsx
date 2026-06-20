@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getMyBloodRequests } from '@/lib/api/allBloodRequest';
-// import Link from 'next/link';
+import { FaEye, FaTrash } from 'react-icons/fa';
 
 const RecentDonationRequests = ({ userId, role }) => {
     const [requests, setRequests] = useState([]);
@@ -87,13 +87,13 @@ const RecentDonationRequests = ({ userId, role }) => {
                                     href={`/donor/requests/${req._id}`}
                                     className="text-blue-400 hover:text-blue-300 flex items-center gap-1 text-sm"
                                 >
-                                    👁️ View Details
+                                    <FaEye /> View Details
                                 </a>
                                 <button 
                                     onClick={() => alert('Delete feature coming soon')} // Replace with your delete logic
                                     className="text-red-400 hover:text-red-300 flex items-center gap-1 text-sm"
                                 >
-                                    🗑️ Delete
+                                    <FaTrash/> Delete
                                 </button>
                             </div>
                         </div>
