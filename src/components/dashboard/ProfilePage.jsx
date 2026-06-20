@@ -114,7 +114,7 @@ const ProfilePage = () => {
       if (response.ok && data.success) {
         // সফলভাবে আপলোড হলে সাময়িকভাবে স্টেট আপডেট হবে
         setFormData((prev) => ({ ...prev, image: data.data.url }));
-        toast.success("Image uploaded successfully! Click Save to keep changes.");
+        // toast.success("Image uploaded successfully! Click Save to keep changes.");
       } else {
         const errMsg = data.error?.message || "Failed to upload image.";
         toast.error(`ImgBB Error: ${errMsg}`);

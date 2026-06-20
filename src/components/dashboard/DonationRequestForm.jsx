@@ -1,5 +1,7 @@
 'use client';
 
+import { useSession } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react';
 import {
   FiUser,
@@ -14,9 +16,9 @@ import {
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-// ------------------------------------------------------------------------
 // Full Bangladesh Location Data: Division -> District -> Upazilas
 // ------------------------------------------------------------------------
+
 const bdLocationData = {
   Dhaka: {
     Dhaka: ['Dhamrai', 'Dohar', 'Keraniganj', 'Nawabganj', 'Savar'],
@@ -309,10 +311,16 @@ const DonationRequestForm = ({ form, setForm, errors, submitting, onSubmit }) =>
     return Object.keys(next).length === 0;
   };
 
+  const router = useRouter();
+  const { data: session } = useSession(); 
+  const user = session?.user;
+
   const handleFormSubmit = (e) => {
     if (!validate()) return;
     onSubmit(e, form);
     toast.success('Blood Donation Request Successfully done');
+    const role = user?.role || 'donor';
+    router.push(`/dashboard/${role}/my-requests`);
   };
 
   return (
@@ -355,7 +363,7 @@ const DonationRequestForm = ({ form, setForm, errors, submitting, onSubmit }) =>
               <input
                 placeholder="Enter full name"
                 value={form.recipientName}
-                required   
+                required
                 onChange={handleInput('recipientName')}
                 className={`${inputBase} ${errors.recipientName ? borderErr : borderOk}`}
               />
