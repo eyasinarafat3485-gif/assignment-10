@@ -14,7 +14,6 @@ const RecentDonationRequests = ({ userId, role }) => {
         const fetchRecent = async () => {
             try {
                 setLoading(true);
-                // Fetch only latest 3 requests
                 const data = await getMyBloodRequests(userId, 1, 3);
                 setRequests(Array.isArray(data?.requests) ? data.requests : []);
             } catch (error) {
@@ -31,7 +30,6 @@ const RecentDonationRequests = ({ userId, role }) => {
         <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mt-8">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-semibold text-white">Recent Requests</h3>
-              
             </div>
 
             {loading ? (
@@ -47,24 +45,24 @@ const RecentDonationRequests = ({ userId, role }) => {
                     {requests.map((req) => (
                         <div 
                             key={req._id}
-                            className="grid grid-cols-12 gap-4 bg-zinc-950 border border-zinc-800 rounded-xl p-5 items-center hover:border-red-900/70 transition-all"
+                            className="grid grid-cols-12 gap-4 bg-zinc-950 border border-zinc-800 rounded-xl p-5 items-start md:items-center hover:border-red-900/70 transition-all"
                         >
-                            {/* Participants */}
+                            {/* Participants - Mobile: full, MD: 3 cols */}
                             <div className="col-span-12 md:col-span-3">
                                 <p className="text-xs text-gray-500">PARTICIPANTS</p>
                                 <p className="text-white font-medium">{req.recipientName}</p>
                                 <p className="text-xs text-gray-500">Requested by Donor</p>
                             </div>
 
-                            {/* Location */}
-                            <div className="col-span-12 md:col-span-3">
+                            {/* Location - Mobile: full, MD: 2 cols */}
+                            <div className="col-span-12 md:col-span-2">
                                 <p className="text-xs text-gray-500">LOCATION</p>
                                 <p className="text-white">
                                     {req.district}{req.upazila ? `, ${req.upazila}` : ''}
                                 </p>
                             </div>
 
-                            {/* Schedule */}
+                            {/* Schedule - Mobile: full, MD: 2 cols */}
                             <div className="col-span-12 md:col-span-2">
                                 <p className="text-xs text-gray-500">SCHEDULE</p>
                                 <p className="text-white">
@@ -73,7 +71,7 @@ const RecentDonationRequests = ({ userId, role }) => {
                                 </p>
                             </div>
 
-                            {/* Blood Group */}
+                            {/* Need - Mobile: full, MD: 2 cols */}
                             <div className="col-span-12 md:col-span-2">
                                 <p className="text-xs text-gray-500">NEED</p>
                                 <span className="inline-block bg-red-600/10 text-red-400 px-5 py-1 rounded-full font-bold text-sm">
@@ -81,16 +79,31 @@ const RecentDonationRequests = ({ userId, role }) => {
                                 </span>
                             </div>
 
-                            {/* Actions */}
-                            <div className="col-span-12 md:col-span-2 flex justify-end gap-3 relative">
+                            {/* Status - NEW - Mobile: full, MD: 1 col */}
+                            <div className="col-span-12 md:col-span-1">
+                                <p className="text-xs text-gray-500">STATUS</p>
+                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${
+                                    req.status === 'Pending' 
+                                        ? 'bg-amber-500/10 text-amber-500 border-amber-500/30' 
+                                        : req.status === 'Approved' || req.status === 'Completed'
+                                        ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/30'
+                                        : 'bg-zinc-500/10 text-zinc-400 border-zinc-500/30'
+                                }`}>
+                                    {req.status || 'Pending'}
+                                </span>
+                            </div>
+
+                            {/* Actions - Mobile: full width + border, MD: right aligned */}
+                            <div className="col-span-12 md:col-span-2 flex flex-row md:justify-end gap-4 pt-4 md:pt-0 border-t md:border-t-0 border-zinc-800">
+                                
                                 <a 
                                     href={`/donor/requests/${req._id}`}
                                     className="text-blue-400 hover:text-blue-300 flex items-center gap-1 text-sm"
                                 >
-                                    <FaEye /> View Details
+                                    <FaEye /> Details
                                 </a>
                                 <button 
-                                    onClick={() => alert('Delete feature coming soon')} // Replace with your delete logic
+                                    onClick={() => alert('Delete feature coming soon')}
                                     className="text-red-400 hover:text-red-300 flex items-center gap-1 text-sm"
                                 >
                                     <FaTrash/> Delete

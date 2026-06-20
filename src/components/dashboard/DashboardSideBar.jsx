@@ -61,7 +61,7 @@ export default function DashboardSideBar() {
                     className="flex items-center gap-3 text-white rounded-xl px-2 py-2.5 bg-[#4a4a4d] text-sm transition-colors cursor-pointer hover:bg-default hover:text-black"
                     href={item.href}
                 >
-                    <item.icon className="size-5 text-muted" />
+                    <item.icon className="size-5 text-red-500" />
                     {item.label}
                 </Link>
             ))}
