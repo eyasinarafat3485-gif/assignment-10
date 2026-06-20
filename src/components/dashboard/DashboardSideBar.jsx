@@ -48,9 +48,6 @@ export default function DashboardSideBar() {
         admin: adminNavLinks
     };
 
-    // নিশ্চিত করা হচ্ছে যে ইউজার রোল ম্যাচ না করলে বা আনঅথরাইজড হলে ডিফল্ট 'seekerNavLinks' পাবে
-    // const currentRole = user?.role === 'recruiter' ? 'recruiter' : 'seeker';
-    // const navItems = navLinksMap[currentRole] || seekerNavLinks;
     const navItems = navLinksMap[user?.role || 'donor']
 
     const navContent = (

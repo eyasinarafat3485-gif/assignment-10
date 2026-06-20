@@ -6,7 +6,6 @@ import { FaDropbox, FaShieldAlt } from 'react-icons/fa';
 import { FiActivity, FiShieldAlert } from 'react-icons/fi';
 
 export default function BloodStockRadar() {
-  // Mock Data: বাস্তব প্রজেক্টে এটি ব্যাকএন্ড বা ডেটাবেজ থেকে লাইভ আপডেট হবে
   const stockData = [
     { group: 'O+', percentage: 85, status: 'Good', bags: 142 },
     { group: 'O-', percentage: 18, status: 'Critical', bags: 12 },
@@ -19,7 +18,7 @@ export default function BloodStockRadar() {
   ];
 
   return (
-    <section className="w-full py-20 bg-zinc-950/70 text-white font-sans border-t border-zinc-900 relative overflow-hidden">
+    <section className="w-full py-20 bg-zinc-950/70 text-white font-sans  relative overflow-hidden">
       {/* Background Pulse Effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
 

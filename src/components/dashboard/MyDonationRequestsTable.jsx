@@ -161,7 +161,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getMyBloodRequests } from '@/lib/api/allBloodRequest';
-import EditRequestModal from './EditRequestModal'; // সঠিক পাথ দিন
+import EditRequestModal from './EditRequestModal'; 
 
 const MyDonationRequestsTable = ({ userId, role }) => {
   const [requests, setRequests] = useState([]);
@@ -177,7 +177,7 @@ const MyDonationRequestsTable = ({ userId, role }) => {
   // Pagination States
   const [currentPage, setCurrentPage] = useState(1);
   const [totalRequests, setTotalRequests] = useState(0);
-  const itemsPerPage = 5; 
+  const itemsPerPage = 10; 
 
   const totalPages = Math.ceil(totalRequests / itemsPerPage);
 
@@ -201,7 +201,6 @@ const MyDonationRequestsTable = ({ userId, role }) => {
     fetchRequests();
   }, [userId, currentPage]);
 
-  // এডিট সফল হলে ফ্রন্টএন্ড স্টেট ডাইনামিকালি রিয়েল-টাইম আপডেট করার মেকানিজম
   const handleUpdateSuccess = (updatedData) => {
     setRequests((prevRequests) =>
       prevRequests.map((req) => (req._id === updatedData._id ? { ...req, ...updatedData } : req))
