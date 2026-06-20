@@ -10,11 +10,11 @@ const DonorMyRequestsPage = () => {
   const currentUserId = user?.id || user?._id || user?.userId;
 
   return (
-    <div className="min-h-screen text-zinc-100 p-4 md:p-8">
+    <div className="min-h-screen text-zinc-100 ">
       <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
               {user?.role}
             </h2>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center p-4 md:p-8">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
             Donor Panel<span className="text-red-500"> All Requests</span>

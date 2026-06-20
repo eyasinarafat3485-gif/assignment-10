@@ -9,16 +9,12 @@ const CreateDonationRequestPage = () => {
           const user = session?.user;
           console.log(user, isPending);
   return (
-    <div className="min-h-screen px-4 py-10 md:px-8">
-      {/* <h2 className="text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase">
-        New Donation Request
-      </h2> */}
-
+    <div className="min-h-screen ">
       <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
-                {user?.role}
-            </h2>
+        {user?.role}
+      </h2>
 
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-5xl ml-8">
         <div className="mb-8">
           <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
             New <span className="text-red-500">Donation Request</span>

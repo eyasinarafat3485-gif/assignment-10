@@ -12,9 +12,12 @@ const VolunteerMyRequestsPage = () => {
   const currentUserId = user?.id || user?._id || user?.userId;
 
   return (
-    <div className="min-h-screen text-zinc-100 p-4 md:p-8">
+    <div className="min-h-screen text-zinc-100 ">
+       <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
+              {user?.role}
+            </h2>
       {/* Top Header & Role Badge */}
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center p-4 md:p-8">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
             My All <span className="text-red-500">Donation Requests</span>
@@ -23,9 +26,7 @@ const VolunteerMyRequestsPage = () => {
             Manage and track your blood donation posts as a volunteer.
           </p>
         </div>
-        <h2 className="text-xl text-red-500 font-bold uppercase tracking-wider">
-          {user?.role || 'Volunteer'}
-        </h2>
+        
       </div>
 
       {/* সাবকম্পোনেন্ট কল — যখন সেশন লোডিং শেষ হবে এবং আইডি পাওয়া যাবে */}
