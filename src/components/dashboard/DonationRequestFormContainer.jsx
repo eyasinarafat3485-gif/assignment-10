@@ -20,7 +20,7 @@ const initialForm = {
   message: '',
 };
 
-const DonationRequestFormContainer = ({donor}) => {
+const DonationRequestFormContainer = () => {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -67,8 +67,7 @@ const DonationRequestFormContainer = ({donor}) => {
       requesterName: user?.name,
       requesterEmail: user?.email,
       role: user?.role,
-      status: "Pending", 
-      donorId: donor?.id,          // Default Status Fixed
+      status: "Pending",         // Default Status Fixed
       createdAt: new Date().toISOString(),
     };
 

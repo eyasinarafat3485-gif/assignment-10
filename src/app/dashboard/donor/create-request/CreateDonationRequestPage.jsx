@@ -142,7 +142,7 @@ import React from 'react';
 import DonationRequestFormContainer from '@/components/dashboard/DonationRequestFormContainer';
 // import DonationRequestFormContainer from './DonationRequestFormContainer';
 
-const CreateDonationRequestPage = ({donor}) => {
+const CreateDonationRequestPage = () => {
   const { data: session, isPending } = useSession();
   const user = session?.user;
   console.log(user, isPending);
@@ -163,7 +163,7 @@ const CreateDonationRequestPage = ({donor}) => {
         </div>
 
         {/* Reusable Sub Component */}
-        <DonationRequestFormContainer  donor={donor}/>
+        <DonationRequestFormContainer />
       </div>
     </div>
   );
