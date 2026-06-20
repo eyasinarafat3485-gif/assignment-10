@@ -37,7 +37,7 @@ export default function DashboardSideBar() {
         { icon: House, href: '/dashboard/admin', label: "Dashboard" },
         { icon: FaUser, href: '/dashboard/admin/my-profile', label: "My Profile" },
         { icon: FaHand, href: '/dashboard/admin/my-requests', label: "MY Requests" },
-        { icon: FaEdit, href: '/dashboard/admin/cancle-request', label: "Cancle Request" },
+        { icon: FaEdit, href: '/dashboard/admin/create-request', label: "Create Request" },
         { icon: FaUsers, href: '/dashboard/admin/all-users', label: "All Users" },
         { icon: FaUsers, href: '/dashboard/admin/public-requests', label: "Public Requests" }
     ];
