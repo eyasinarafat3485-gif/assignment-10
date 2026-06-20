@@ -54,11 +54,11 @@ export default function DashboardSideBar() {
     const navItems = navLinksMap[user?.role || 'donor']
 
     const navContent = (
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col bg-[#4a4a4d] gap-1">
             {navItems.map((item) => (
                 <Link
                     key={item.label}
-                    className="flex items-center gap-3 text-white rounded-xl px-2 py-2.5 text-sm transition-colors cursor-pointer hover:bg-default hover:text-black"
+                    className="flex items-center gap-3 text-white rounded-xl px-2 py-2.5 bg-[#4a4a4d] text-sm transition-colors cursor-pointer hover:bg-default hover:text-black"
                     href={item.href}
                 >
                     <item.icon className="size-5 text-muted" />
@@ -70,22 +70,22 @@ export default function DashboardSideBar() {
 
     return (
         <>
-            <aside className="hidden w-48 shrink-0 border-r bg-zinc-950/50 min-h-screen py-4 pl-6 pr-4 lg:block">
+            <aside className="hidden w-48 shrink-0 border-r bg-[#4a4a4d] h-full py-4 pl-6 pr-4 lg:block">
                 {navContent}
             </aside>
-            <Drawer>
-                <Button variant="secondary" className="lg:hidden bg-zinc-950/70 text-white">
+            <Drawer className='bg-[#4a4a4d]'>
+                <Button variant="secondary" className="lg:hidden bg-[#4a4a4d] text-white">
                     <TbLayoutSidebarLeftCollapse className="pl-2  w-10" size="25" />
                     Menu
                 </Button>
                 <Drawer.Backdrop>
-                    <Drawer.Content placement="left" className=" bg-zinc-950/70 text-white w-30 ">
-                        <Drawer.Dialog className="  bg-zinc-950/70 text-white">
+                    <Drawer.Content placement="left" className="bg-[#4a4a4d] text-white w-28 ">
+                        <Drawer.Dialog className=" bg-[#4a4a4d] text-white">
                             <Drawer.CloseTrigger />
-                            <Drawer.Header>
-                                <Drawer.Heading className=" bg-zinc-950/70 text-white text-lg">Dashboard Sidebar</Drawer.Heading>
+                            <Drawer.Header className="bg-[#4a4a4d]">
+                                <Drawer.Heading className="bg-[#4a4a4d] text-white text-lg">Dashboard Sidebar</Drawer.Heading>
                             </Drawer.Header>
-                            <Drawer.Body>
+                            <Drawer.Body className="bg-[#4a4a4d]">
                                 {navContent}
                             </Drawer.Body>
                         </Drawer.Dialog>
