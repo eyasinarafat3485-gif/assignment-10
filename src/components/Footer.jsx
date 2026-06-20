@@ -21,7 +21,7 @@ export default function Footer() {
 
   return (
     <footer className="w-full bg-zinc-950/70 backdrop-blur-md text-zinc-400 font-sans relative">
-      <div className="max-w-7xl mx-auto px-5 lg:px-14 pt-16 pb-8">
+      <div className="max-w-7xl mx-auto px-5 lg:px-8 pt-16 pb-8">
         
         {/* Main Grid Network */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
@@ -141,7 +141,7 @@ export default function Footer() {
           <button
             onClick={scrollToTop}
             aria-label="Scroll to top"
-            className="absolute right-0 bottom-6 sm:bottom-4 w-10 h-10 rounded-xl bg-[#4A4A4A]/80 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-red-600 hover:border-red-500 shadow-lg hover:shadow-red-900/30 flex items-center justify-center transition-all duration-300 group cursor-pointer"
+            className="absolute right-0 bottom-6 sm:bottom-4 w-10 h-10 rounded-xl bg-red-600 backdrop-blur-md border border-zinc-800 text-zinc-300 hover:text-white hover:bg-red-600 hover:border-red-500 shadow-lg hover:shadow-red-900/30 flex items-center justify-center transition-all duration-300 group cursor-pointer"
           >
             <FiArrowUp size={18} className="transform group-hover:-translate-y-0.5 transition-transform duration-300" />
           </button>

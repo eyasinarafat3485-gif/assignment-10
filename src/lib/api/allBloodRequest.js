@@ -1,8 +1,25 @@
-import { serverFetch } from "../core/server";
+// import { serverFetch } from "../core/server";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+// export const getMyBloodRequests = async (userId, page = 1, limit = 5) => {
+//     return serverFetch(`/api/my/bloodRequests?userId=${userId}&page=${page}&limit=${limit}`);
+// }
 
-// userId এর সাথে page এবং limit যোগ করা হয়েছে (ডিফল্ট পেজ ১ এবং লিমিট ৫)
+// export const getBReqestById = async(reqId)=>{
+//     return serverFetch(`/api/bloodRequests/${reqId}`);
+// }
+
+
+
+import { serverFetch, serverMutationPatch } from "../core/server";
+
 export const getMyBloodRequests = async (userId, page = 1, limit = 5) => {
     return serverFetch(`/api/my/bloodRequests?userId=${userId}&page=${page}&limit=${limit}`);
+}
+
+export const getBReqestById = async(reqId)=>{
+    return serverFetch(`/api/bloodRequests/${reqId}`);
+}
+
+export const updateRequestStatus = async (reqId, status) => {
+    return serverMutationPatch(`/api/bloodRequests/${reqId}`, { status });
 }

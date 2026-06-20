@@ -4,9 +4,6 @@ import React from 'react';
 
 const AdminHomePage = () => {
     const { data: session, isPending } = useSession();
-    if (isPending) {
-        return <div>Loading...</div>
-    }
     const user = session?.user;
     console.log(user, isPending);
     return (
