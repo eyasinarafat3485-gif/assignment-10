@@ -18,7 +18,7 @@ const DonorHomePage = () => {
                     {user?.role || 'DONOR'}
                 </h2>
                 <h1 className="text-2xl md:text-5xl font-bold text-white">
-                    Hello, <span className="text-red-500">
+                    Welcome, <span className="text-red-500">
                         {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Donor'}
                     </span>!
                 </h1>
@@ -33,7 +33,7 @@ const DonorHomePage = () => {
             )}
 
             {/* View All Button - Fixed */}
-            <div className="flex justify-center pt-6">
+            <div className="flex justify-center pt-6 mb-5">
                 <Link 
                     href="/dashboard/donor/my-requests"
                     className="bg-white text-black font-semibold px-12 py-4 rounded-2xl hover:bg-gray-100 transition-all active:scale-95"

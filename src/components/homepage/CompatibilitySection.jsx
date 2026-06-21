@@ -22,11 +22,11 @@ export default function CompatibilitySection() {
   const bloodGroups = Object.keys(bloodData);
 
   return (
-    <section className="relative w-full py-20 bg-zinc-950/70 text-white font-sans overflow-hidden">
-      <div className="max-w-7xl mx-auto px-5 lg:px-14 relative z-10">
+    <section className="relative w-full py-10 bg-zinc-950/70 text-white font-sans overflow-hidden">
+      <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
+        <div className=" mx-auto mb-14 space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-xs font-bold text-zinc-300 uppercase tracking-wider">
             <BiDna size={14} className="text-red-500 animate-spin" style={{ animationDuration: '6s' }} />
             Compatibility Guide
@@ -34,7 +34,7 @@ export default function CompatibilitySection() {
           <h2 className="text-3xl md:text-5xl font-black tracking-tight text-zinc-100">
             Can You Save <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.3)]">A Life?</span>
           </h2>
-          <p className="text-zinc-400 text-base md:text-lg">
+          <p className="text-white text-base md:text-lg">
             Select your blood group below to instantly discover who you can accept blood from and who you can safely donate to.
           </p>
         </div>

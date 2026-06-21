@@ -23,7 +23,7 @@ export default function BloodDonationBanner() {
             />
 
             {/* Hero Core Content */}
-            <div className="relative z-10 max-w-5xl mx-auto px-4 pt-28 md:pt-36 text-center space-y-8 flex-grow flex flex-col justify-center items-center">
+            <div className="relative z-10 mx-auto px-4 pt-28 md:pt-36 text-center space-y-8 flex-grow flex flex-col justify-center items-center">
 
                 {/* Unique Floating Badge */}
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 text-xs font-semibold tracking-wide text-zinc-200 shadow-xl">
@@ -42,7 +42,7 @@ export default function BloodDonationBanner() {
                 </h1>
 
                 {/* Unique Subtitle */}
-                <p className="text-zinc-400 text-base md:text-xl max-w-2xl leading-relaxed font-medium">
+                <p className="text-white text-base md:text-xl max-w-2xl leading-relaxed font-medium">
                     Bridge the gap between critical blood shortages and life-saving heroes. Join a decentralized network built for instant donor matchmaking.
                 </p>
 

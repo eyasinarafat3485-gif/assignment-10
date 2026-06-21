@@ -125,6 +125,7 @@
 import React, { useEffect, useState } from 'react';
 import { getMyBloodRequests } from '@/lib/api/allBloodRequest';
 import { FaEye, FaTrash } from 'react-icons/fa';
+import Link from 'next/link';
 
 const RecentDonationRequests = ({ userId, role }) => {
     const [requests, setRequests] = useState([]);
@@ -216,13 +217,13 @@ const RecentDonationRequests = ({ userId, role }) => {
                                 </div>
 
                                 {/* Actions - Vertical on mobile/md, Horizontal on lg */}
-                                <div className="col-span-12 md:col-span-8 lg:col-span-1 flex flex-col items-end gap-3 pt-4 lg:pt-0">
-                                    <a
-                                        href={`/donor/requests/${req._id}`}
+                                <div className="col-span-12 md:col-span-8 lg:col-span-1 flex flex-col items-end gap-3 pt-4 lg:pt-0"> 
+                                    <Link
+                                        href={`/donation-requests/${req._id}`}
                                         className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-sm font-medium hover:underline"
                                     >
-                                        <FaEye /> Details
-                                    </a>
+                                        <FaEye /> View
+                                    </Link>
                                     <button
                                         onClick={() => alert('Delete feature coming soon')}
                                         className="flex items-center gap-1.5 text-red-400 hover:text-red-300 text-sm font-medium hover:underline mt-1"

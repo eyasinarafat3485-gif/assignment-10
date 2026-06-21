@@ -18,15 +18,15 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="w-full py-20 bg-zinc-950/70 text-white font-sans">
-      <div className="max-w-7xl mx-auto px-5 lg:px-14">
+    <section className="w-full py-10 bg-zinc-950/70 text-white font-sans">
+      <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className=" mx-auto mb-16 space-y-4">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight text-white">
             Get in Touch <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.3)]">With Us</span>
           </h2>
-          <p className="text-zinc-400 text-base md:text-lg">
+          <p className="text-white text-base md:text-lg">
             Have questions about blood eligibility, or need urgent assistance? Drop us a message or call our support line directly.
           </p>
         </div>

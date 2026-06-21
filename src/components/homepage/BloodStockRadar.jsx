@@ -18,11 +18,11 @@ export default function BloodStockRadar() {
   ];
 
   return (
-    <section className="w-full py-20 bg-zinc-950/70 text-white font-sans  relative overflow-hidden">
+    <section className="w-full py-10 bg-zinc-950/70 text-white font-sans  relative overflow-hidden">
       {/* Background Pulse Effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-5 lg:px-14 relative z-10">
+      <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
@@ -34,7 +34,7 @@ export default function BloodStockRadar() {
             <h2 className="text-3xl md:text-5xl font-black tracking-tight text-zinc-100">
               Central Blood <span className="text-red-600 drop-shadow-[0_0_15px_rgba(220,38,38,0.3)]">Stock Status</span>
             </h2>
-            <p className="text-zinc-400 text-sm md:text-base">
+            <p className="text-white text-sm md:text-base">
               Real-time availability matrix across affiliated blood banks. Critical status levels indicate an urgent need for voluntary donors.
             </p>
           </div>
