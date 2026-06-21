@@ -2,15 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { getMyBloodRequests, updateRequestStatus } from '@/lib/api/allBloodRequest';
-import EditRequestModal from './EditRequestModal'; 
-// ডাইনামিক লিংকের জন্য Next.js এর Link কম্পোনেন্ট ইম্পোর্ট করা হলো
+import EditRequestModal from './EditRequestModal';
 import Link from 'next/link';
 import { deleteBloodRequest } from '@/lib/actions/allBloods';
 
 const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // ড্রপডাউন মেনু ট্রাক করার স্টেট (রো আইডি)
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -18,19 +17,19 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
-  // 🛠️ [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডালের জন্য স্টেটসমূহ
+  // 🛠️ [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডালের জন্য স্টেটসমূহ
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Pagination States (আপনার অরিজিনাল কোডের স্টেট)
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; 
+  const itemsPerPage = 10;
 
   const fetchRequests = () => {
     if (userId) {
       setIsLoading(true);
-      getMyBloodRequests(userId, 1, 1000) 
+      getMyBloodRequests(userId, 1, 1000)
         .then((data) => {
           setRequests(Array.isArray(data?.requests) ? data.requests : []);
           setIsLoading(false);
@@ -46,26 +45,26 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     fetchRequests();
   }, [userId]);
 
-  // 🛠️ [রিকোয়ারমেন্ট]: Status Update করার ফাংশন (Done / Cancelled এর জন্য)
- const handleStatusUpdate = async (requestId, newStatus) => {
-  try {
-    // 🛠️ আপনার তৈরি করা ডেডিকেটেড লিভ ফাংশনটি কল করা হলো
-    const result = await updateRequestStatus(requestId, newStatus);
+  // 🛠️ [রিকোয়ারমেন্ট]: Status Update করার ফাংশন (Done / Cancelled এর জন্য)
+  const handleStatusUpdate = async (requestId, newStatus) => {
+    try {
+      // 🛠️ আপনার তৈরি করা ডেডিকেটেড লিভ ফাংশনটি কল করা হলো
+      const result = await updateRequestStatus(requestId, newStatus);
 
-    // ব্যাকএন্ডে সাকসেসফুলি সেভ হলে তবেই কেবল ফ্রন্টএন্ড স্টেট আপডেট হবে
-    if (result) {
-      setRequests((prevRequests) =>
-        prevRequests.map((req) => 
-          req._id === requestId ? { ...req, status: newStatus } : req
-        )
-      );
-      setActiveDropdown(null); // ড্রপডাউন বন্ধ করার জন্য
+      // ব্যাকএন্ডে সাকসেসফুলি সেভ হলে তবেই কেবল ফ্রন্টএন্ড স্টেট আপডেট হবে
+      if (result) {
+        setRequests((prevRequests) =>
+          prevRequests.map((req) =>
+            req._id === requestId ? { ...req, status: newStatus } : req
+          )
+        );
+        setActiveDropdown(null); // ড্রপডাউন বন্ধ করার জন্য
+      }
+    } catch (error) {
+      console.error("Error updating status via lib function:", error);
+      alert("Could not update status. Please try again.");
     }
-  } catch (error) {
-    console.error("Error updating status via lib function:", error);
-    alert("Could not update status. Please try again.");
-  }
-};
+  };
 
   // 🛠️ [রিকোয়ারমেন্ট]: Request Delete করার কনফার্মেশন ফাংশন
   const handleConfirmDelete = async () => {
@@ -74,7 +73,7 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     try {
       // 🟢 আপনার নতুন রিফ্যাক্টর করা সার্ভার অ্যাকশন কল করা হলো
       const data = await deleteBloodRequest(requestToDelete);
-      
+
       // ব্যাকএন্ডে সফলভাবে ডিলিট হলে (deletedCount > 0) স্টেট থেকে বাদ যাবে
       if (data && data.deletedCount > 0) {
         setRequests((prevRequests) => prevRequests.filter((req) => req._id !== requestToDelete));
@@ -92,21 +91,21 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   };
 
   // 🛠️ আপনার অরিজিনাল ফিক্সড ফিল্টারিং লজিক (হুবহু অপরিবর্তিত)
- // ✅ Updated Filtering Logic (Canceled/Cancelled সাপোর্ট সহ)
-const filteredRequests = requests.filter((request) => {
-  if (!statusFilter || statusFilter === 'All Status') return true;
-  
-  const cleanFilter = statusFilter.replace(/\s+/g, '').toLowerCase();
-  const cleanStatus = (request.status || '').replace(/\s+/g, '').toLowerCase();
+  // ✅ Updated Filtering Logic (Canceled/Cancelled সাপোর্ট সহ)
+  const filteredRequests = requests.filter((request) => {
+    if (!statusFilter || statusFilter === 'All Status') return true;
 
-  // Canceled / Cancelled এর জন্য বিশেষ হ্যান্ডলিং
-  if (cleanFilter === 'canceled' || cleanFilter === 'cancelled') {
-    return cleanStatus === 'canceled' || cleanStatus === 'cancelled';
-  }
+    const cleanFilter = statusFilter.replace(/\s+/g, '').toLowerCase();
+    const cleanStatus = (request.status || '').replace(/\s+/g, '').toLowerCase();
 
-  // অন্য সব স্ট্যাটাসের জন্য সাধারণ ম্যাচিং
-  return cleanStatus === cleanFilter;
-});
+    // Canceled / Cancelled এর জন্য বিশেষ হ্যান্ডলিং
+    if (cleanFilter === 'canceled' || cleanFilter === 'cancelled') {
+      return cleanStatus === 'canceled' || cleanStatus === 'cancelled';
+    }
+
+    // অন্য সব স্ট্যাটাসের জন্য সাধারণ ম্যাচিং
+    return cleanStatus === cleanFilter;
+  });
 
   // ফিল্টার করা ডাটার ওপর ভিত্তি করে পেজিনেশন ক্যালকুলেশন (আপনার কোডের লজিক)
   const totalFilteredRequests = filteredRequests.length;
@@ -156,18 +155,23 @@ const filteredRequests = requests.filter((request) => {
             </thead>
             <tbody className="divide-y divide-zinc-800">
               {currentDisplayedRequests.map((request) => {
-                // স্ট্যাটাস ম্যাচিং সহজ করার জন্য সেফটি ভেরিয়েবল তৈরি করা হলো
+                // স্ট্যাটাস ম্যাচিং সহজ করার জন্য সেফটি ভেরিয়েবল তৈরি করা হলো
                 const currentStatusClean = (request.status || '').replace(/\s+/g, '').toLowerCase();
+
+                // 🛠️ রিকোয়েস্ট 'inprogress', 'done' অথবা 'completed' হলে ডোনারের ইনফো ট্রিম করবে
+                const isAssignedOrDone = currentStatusClean === 'inprogress' || 
+                                         currentStatusClean === 'done' || 
+                                         currentStatusClean === 'completed';
 
                 return (
                   <tr key={request._id} className="hover:bg-zinc-800/30 transition-colors">
                     <td className="p-4">
                       <div className="font-bold text-zinc-200">{request.recipientName}</div>
-                      
-                      {/* 🛠️ [রিকোয়ারমেন্ট]: স্ট্যাটাস 'In Progress' হলে ডোনার ইনফো (নাম ও ইমেইল) দেখাবে, অন্যথায় Posted by you */}
-                      {currentStatusClean === 'inprogress' && request.donorName ? (
+
+                      {/* 🛠️ [আপডেটেড লজিক]: ইন-প্রোগ্রেস অথবা ডান/কমপ্লিটেড সব ক্ষেত্রেই ডোনারের নাম ও ইমেল দেখাবে */}
+                      {isAssignedOrDone ? (
                         <div className="text-xs text-amber-400 mt-0.5 font-medium">
-                          Donor: {request.donorName} ({request.donorEmail || 'N/A'})
+                          Donor: {request.name || request.donorName || 'Assigned'} ({request.email || request.donorEmail || 'No Email'})
                         </div>
                       ) : (
                         <div className="text-xs text-zinc-500">Posted by you</div>
@@ -187,22 +191,21 @@ const filteredRequests = requests.filter((request) => {
                       <div className="text-xs text-zinc-500">{request.requiredTime || "10:00 AM"}</div>
                     </td>
                     <td className="p-4">
-                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${
-                        currentStatusClean === 'pending' 
-                          ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' 
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${currentStatusClean === 'pending'
+                          ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                           : currentStatusClean === 'canceled' || currentStatusClean === 'cancelled'
-                          ? 'bg-rose-500/10 text-rose-500 border-rose-500/20'
-                          : currentStatusClean === 'inprogress'
-                          ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                          : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                      }`}>
+                            ? 'bg-rose-500/10 text-rose-500 border-rose-500/20'
+                            : currentStatusClean === 'inprogress'
+                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                              : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                        }`}>
                         • {request.status}
                       </span>
                     </td>
-                    
+
                     {/* --- Actions Dropdown Column --- */}
                     <td className="p-4 text-center relative">
-                      <button 
+                      <button
                         onClick={() => setActiveDropdown(activeDropdown === request._id ? null : request._id)}
                         className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-all"
                       >
@@ -216,9 +219,9 @@ const filteredRequests = requests.filter((request) => {
                         <>
                           <div className="fixed inset-0 z-10" onClick={() => setActiveDropdown(null)}></div>
                           <div className="absolute right-4 mt-1 w-44 rounded-xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-xl z-20 text-left">
-                            
-                            {/* View Details Link (হুবহু অপরিবর্তিত) */}
-                            <Link 
+
+                            {/* View Details Link */}
+                            <Link
                               href={`/donation-requests/${request._id}`}
                               onClick={() => setActiveDropdown(null)}
                               className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-900 font-medium transition-all"
@@ -230,19 +233,20 @@ const filteredRequests = requests.filter((request) => {
                               View Details
                             </Link>
 
-                            {/* 🛠️ [রিকোয়ারমেন্ট]: স্ট্যাটাস 'In Progress' হলেই কেবল Done এবং Cancel বাটন দুটি মেনুতে আসবে */}
+                            {/* 🛠️ [রিকোয়ারমেন্ট]: স্ট্যাটাস 'In Progress' হলেই কেবল Done এবং Cancel বাটন দুটি মেনুতে আসবে */}
                             {currentStatusClean === 'inprogress' && (
                               <>
-                                <button 
+                                <button
                                   onClick={() => handleStatusUpdate(request._id, 'Done')}
                                   className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-900 font-medium transition-all"
+                                // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-emerald-500">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                   </svg>
                                   Done
                                 </button>
-                                <button 
+                                <button
                                   onClick={() => handleStatusUpdate(request._id, 'Canceled')}
                                   className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-900 font-medium transition-all"
                                 >
@@ -254,8 +258,8 @@ const filteredRequests = requests.filter((request) => {
                               </>
                             )}
 
-                            {/* Edit Request Button (হুবহু অপরিবর্তিত) */}
-                            <button 
+                            {/* Edit Request Button */}
+                            <button
                               onClick={() => {
                                 setSelectedRequest(request);
                                 setIsModalOpen(true);
@@ -269,8 +273,8 @@ const filteredRequests = requests.filter((request) => {
                               Edit Request
                             </button>
 
-                            {/* 🛠️ [রিকোয়ারমেন্ট]: Delete Request বাটন */}
-                            <button 
+                            {/* 🛠️ [রিকোয়ারমেন্ট]: Delete Request বাটন */}
+                            <button
                               onClick={() => {
                                 setRequestToDelete(request._id);
                                 setIsDeleteModalOpen(true);
@@ -296,7 +300,7 @@ const filteredRequests = requests.filter((request) => {
         )}
       </div>
 
-      {/* Pagination UI (হুবহু আপনার অরিজিনাল কোডের স্ট্রাকচার ও লজিক) */}
+      {/* Pagination UI */}
       {!isLoading && totalFilteredRequests > 0 && (
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
           <div className="text-sm text-zinc-400">
@@ -317,9 +321,8 @@ const filteredRequests = requests.filter((request) => {
               <button
                 key={index + 1}
                 onClick={() => setCurrentPage(index + 1)}
-                className={`w-9 h-9 rounded-lg text-sm font-semibold ${
-                  currentPage === index + 1 ? 'bg-red-500 text-white' : 'border border-zinc-800 text-zinc-400'
-                }`}
+                className={`w-9 h-9 rounded-lg text-sm font-semibold ${currentPage === index + 1 ? 'bg-red-500 text-white' : 'border border-zinc-800 text-zinc-400'
+                  }`}
               >
                 {index + 1}
               </button>
@@ -335,15 +338,15 @@ const filteredRequests = requests.filter((request) => {
         </div>
       )}
 
-      {/* Reusable Edit Modal (হুবহু অপরিবর্তিত) */}
-      <EditRequestModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      {/* Reusable Edit Modal */}
+      <EditRequestModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         requestData={selectedRequest}
         onUpdateSuccess={handleUpdateSuccess}
       />
 
-      {/* 🛠 *[নতুন যুক্ত করা হয়েছে]* [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডাল UI */}
+      {/* 🛠 [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডাল UI */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
