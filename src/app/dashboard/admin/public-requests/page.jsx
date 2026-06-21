@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { FaCheckCircle, FaTimes, FaEdit, FaTrash, FaEye, FaEllipsisV, FaRegCheckCircle } from 'react-icons/fa';
 import { useSession } from '@/lib/auth-client';
-import { FaCheckCircle, FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
+// import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa';
 import { getAdminAllBRequests } from '@/lib/api/bloodsAllGets';
 import { updateBloodRequest, deleteBloodRequest } from '@/lib/api/allBloodRequest';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 const AdminAllRequestsPage = () => {
     const { data: session } = useSession();
@@ -14,7 +16,8 @@ const AdminAllRequestsPage = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updatingId, setUpdatingId] = useState(null);
-
+    const [openMenu, setOpenMenu] = useState(null);
+    const menuRef = useRef(null);
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -28,7 +31,25 @@ const AdminAllRequestsPage = () => {
     const [editForm, setEditForm] = useState({});
     const [saving, setSaving] = useState(false);
 
+
     const limit = 10;
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                menuRef.current &&
+                !menuRef.current.contains(event.target)
+            ) {
+                setOpenMenu(null);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     useEffect(() => {
         if (!user) return;
@@ -121,7 +142,7 @@ const AdminAllRequestsPage = () => {
             await updateBloodRequest(editingRequest._id, editForm);
             toast.success("Request updated successfully");
             handleEditClose();
-            fetchRequests(); 
+            fetchRequests();
         } catch (error) {
             console.error(error);
             alert("Failed to update request");
@@ -131,8 +152,8 @@ const AdminAllRequestsPage = () => {
     };
 
     const getCleanStatus = (rawStatus) => {
-        const statusString = typeof rawStatus === 'object' 
-            ? (rawStatus?.status || "") 
+        const statusString = typeof rawStatus === 'object'
+            ? (rawStatus?.status || "")
             : (rawStatus || "");
         return statusString.replace(/\s+/g, '').toLowerCase();
     };
@@ -219,12 +240,11 @@ const AdminAllRequestsPage = () => {
                                                 {req.requiredDate} at {req.requiredTime}
                                             </td>
                                             <td className="p-4">
-                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${
-                                                    cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
                                                     cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                                                    cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
-                                                    'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                                                }`}>
+                                                        cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                                            'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                    }`}>
                                                     {typeof req.status === 'object' ? req.status?.status : req.status || 'Pending'}
                                                 </span>
                                             </td>
@@ -254,7 +274,7 @@ const AdminAllRequestsPage = () => {
                                                             disabled={updatingId === req._id}
                                                             className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-lg text-sm transition-all disabled:opacity-50"
                                                         >
-                                                            <FaCheckCircle /> Done
+                                                            <FaRegCheckCircle /> Done
                                                         </button>
                                                         <button
                                                             onClick={() => handleStatusUpdate(req._id, 'Canceled')}
@@ -270,7 +290,7 @@ const AdminAllRequestsPage = () => {
                                             </td>
 
                                             {/* Manage: Edit/Delete */}
-                                            <td className="p-4 text-center">
+                                            {/* <td className="p-4 text-center">
                                                 <div className="flex gap-2 justify-center">
                                                     <button
                                                         onClick={() => handleEditOpen(req)}
@@ -287,6 +307,65 @@ const AdminAllRequestsPage = () => {
                                                         <FaTrash /> Delete
                                                     </button>
                                                 </div>
+                                            </td> */}
+
+
+                                            {/* Manage Dropdown */}
+                                            <td className="p-4 text-center relative">
+                                                <button
+                                                    onClick={() =>
+                                                        setOpenMenu(openMenu === req._id ? null : req._id)
+                                                    }
+                                                    className="p-2 rounded-lg bg-zinc-800 hover:bg-zinc-700"
+                                                >
+                                                    <FaEllipsisV />
+                                                </button>
+
+
+                                                {openMenu === req._id && (
+                                                    <div
+                                                        ref={menuRef}
+                                                        className="absolute right-5 top-12 z-20 w-40 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl overflow-hidden"
+                                                    >
+
+
+                                                        <Link
+                                                            href={`/donation-requests/${req._id}`}
+                                                            onClick={() => setOpenMenu(null)}
+                                                            className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-zinc-800 text-zinc-200"
+                                                        >
+                                                            <FaEye />
+                                                            View
+                                                        </Link>
+
+
+                                                        {/* Edit */}
+                                                        <button
+                                                            onClick={() => {
+                                                                handleEditOpen(req);
+                                                                setOpenMenu(null);
+                                                            }}
+                                                            className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-zinc-800 text-blue-400"
+                                                        >
+                                                            <FaEdit />
+                                                            Edit
+                                                        </button>
+
+
+                                                        {/* Delete */}
+                                                        <button
+                                                            onClick={() => {
+                                                                handleDelete(req._id);
+                                                                setOpenMenu(null);
+                                                            }}
+                                                            className="w-full flex items-center gap-2 px-4 py-3 text-sm hover:bg-zinc-800 text-red-500"
+                                                        >
+                                                            <FaTrash />
+                                                            Delete
+                                                        </button>
+
+                                                    </div>
+                                                )}
                                             </td>
                                         </tr>
                                     );
