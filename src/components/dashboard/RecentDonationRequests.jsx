@@ -45,10 +45,14 @@ const RecentDonationRequests = ({ userId, role }) => {
             ) : (
                 <div className="space-y-4">
                     {requests.map((req) => {
-                        // স্ট্যাটাস ম্যাচিং সহজ করার জন্য সেফটি ভেরিয়েবল তৈরি করা হলো
-                        const currentStatusClean = (req.status || '').replace(/\s+/g, '').toLowerCase();
+                        // 🟢 [FIXED - CRASH PROTECTION]: status অবজেক্ট নাকি স্ট্রিং তা নিখুঁতভাবে চেক করা হলো
+                        const rawStatus = req.status;
+                        const statusString = typeof rawStatus === 'object' ? (rawStatus?.status || "") : (rawStatus || "");
+                        
+                        // স্ট্যাটাস টেক্সট ক্লিন করা
+                        const currentStatusClean = statusString.replace(/\s+/g, '').toLowerCase();
 
-                        // 🛠️ রিকোয়েস্ট 'inprogress' অথবা 'done'/'completed' যেকোনো একটি হলে ডোনারের ইনফো দেখাবে
+                        // রিকোয়েস্ট 'inprogress' অথবা 'done'/'completed' যেকোনো একটি হলে ডোনারের ইনফো দেখাবে
                         const isAssignedOrDone = currentStatusClean === 'inprogress' || 
                                                  currentStatusClean === 'done' || 
                                                  currentStatusClean === 'completed';
@@ -65,10 +69,10 @@ const RecentDonationRequests = ({ userId, role }) => {
                                         <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">PARTICIPANTS</p>
                                         <p className="text-white font-medium text-base mt-0.5">{req.recipientName}</p>
                                         
-                                        {/* 🛠️ [আপডেটেড লজیک]: In Progress অথবা Done উভয় ক্ষেত্রেই ডোনারের নাম ও ইমেল শো করবে */}
+                                        {/* 🟢 [FIXED - CORRECT DONOR SHOWING]: এখন ক্রিয়েটরের নাম নয়, সরাসরি আসল ডোনারের নাম-ইমেইল দেখাবে */}
                                         {isAssignedOrDone ? (
                                             <div className="text-xs text-amber-400 mt-1 font-medium bg-amber-500/5 border border-amber-500/10 rounded-md py-1 px-2 inline-block">
-                                                Donor: {req.name || req.donorName || 'Assigned'} ({req.email || req.donorEmail || 'No Email'})
+                                                Donor: {req.donorName || 'Assigned'} ({req.donorEmail || 'No Email'})
                                             </div>
                                         ) : (
                                             <p className="text-xs text-gray-500 mt-0.5">Posted by you</p>
@@ -112,7 +116,7 @@ const RecentDonationRequests = ({ userId, role }) => {
                                                 ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                                                 : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                                         }`}>
-                                            • {req.status || 'Pending'}
+                                            • {statusString || 'Pending'}
                                         </span>
                                     </div>
 

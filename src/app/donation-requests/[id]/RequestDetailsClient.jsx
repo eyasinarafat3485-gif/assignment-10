@@ -1,77 +1,36 @@
-// 'use client';
-
-// import { updateRequestStatus } from '@/lib/api/allBloodRequest';
-// import React, { useState } from 'react';
-// import { FaHospital, FaMapMarkerAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
-// // import { toast, ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';   // ⚠️ এটা ছাড়া toast দেখতে পাবে না
-
-// const RequestDetailsClient = ({ req }) => {
-//     const [isModalOpen, setIsModalOpen] = useState(false);
-//     const [isConfirming, setIsConfirming] = useState(false);
-
-//     const donorName = "Mahbub Vai";
-//     const donorEmail = "donor@gmail.com";
-
-//     const handleDonate = async () => {
-//         setIsConfirming(true);
-//         try {
-//             await updateRequestStatus(req._id, "Inprogress");
-
-//             toast.success("Donation Confirmed! Status changed to In Progress.", {
-//                 autoClose: 4000,
-//                 position: 'top-center',
-//             });
-
-//             setIsModalOpen(false);
-
-//             setTimeout(() => {
-//                 window.location.reload();
-//             }, 1500);
-
-//         } catch (error) {
-//             toast.error("Something went wrong. Please try again.");
-//             console.error(error);
-//         } finally {
-//             setIsConfirming(false);
-//         }
-//     };
-
-//     return (
-//         <div className="min-h-screen bg-zinc-950/70 text-zinc-100 py-8 px-4 md:px-8">
-//             {/* <ToastContainer /> */}
-
-//             {/* ... বাকি সব JSX হুবহু আগের মতোই ... */}
-//         </div>
-//     );
-// };
-
-// export default RequestDetailsClient;
-
-
 'use client';
 
 import { updateRequestStatus } from '@/lib/api/allBloodRequest';
-import { redirect } from 'next/navigation';
+import { useSession } from '@/lib/auth-client';
 import React, { useState } from 'react';
 import { FaHospital, FaMapMarkerAlt, FaCalendarAlt, FaClock, FaUser } from 'react-icons/fa';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';   // ⚠️ এটা ছাড়া toast দেখতে পাবে না
+import 'react-toastify/dist/ReactToastify.css';
 
 const RequestDetailsClient = ({ req }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [status, setStatus] = useState(req.status || "Pending");
+    // import { useSession } from "next-auth/react";
+// component-er bhetor:
+const { data: session } = useSession();
+const donorName = session?.user?.name;
+const donorEmail = session?.user?.email;
 
     // এখানে তোমার লগইন করা Donor এর তথ্য আসবে (Context / Auth থেকে)
-    const donorName = "Mahbub Vai";        // ← পরে Auth Context থেকে dynamic করবে
-    const donorEmail = "donor@gmail.com";  // ← পরে Auth Context থেকে dynamic করবে
+    // const donorName = ;        // ← পরে Auth Context থেকে dynamic করবে
+    // const donorEmail = "donor@gmail.com";  // ← পরে Auth Context থেকে dynamic করবে
 
+    // 🟢 UPDATED FUNCTION HERE
     const handleDonate = async () => {
         setIsConfirming(true);
         try {
-            // API call to update status to "Inprogress"
-            await updateRequestStatus(req._id, "Inprogress");
+            // API call to update status and donor details
+            await updateRequestStatus(req._id, { 
+                status: "Inprogress", 
+                donorName: donorName, 
+                donorEmail: donorEmail 
+            });
 
             toast.success("Donation Confirmed! Status changed to In Progress.", {
                 autoClose: 4000,
@@ -80,11 +39,9 @@ const RequestDetailsClient = ({ req }) => {
 
             setIsModalOpen(false);
 
-            // কিছুক্ষণ পর পেজ রিফ্রেশ
+            // কিছুক্ষণ পর পেজ রিডাইরেক্ট
             setTimeout(() => {
-                
-                // window.location.reload(); // অথবা router.push('/donor/requests')
-                redirect('/donation-requests')
+                window.location.href = '/donation-requests'; 
             }, 1500);
 
         } catch (error) {

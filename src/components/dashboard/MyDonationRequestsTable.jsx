@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -48,7 +49,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   // 🛠️ [রিকোয়ারমেন্ট]: Status Update করার ফাংশন (Done / Cancelled এর জন্য)
   const handleStatusUpdate = async (requestId, newStatus) => {
     try {
-      // 🛠️ আপনার তৈরি করা ডেডিকেটেড লিভ ফাংশনটি কল করা হলো
       const result = await updateRequestStatus(requestId, newStatus);
 
       // ব্যাকএন্ডে সাকসেসফুলি সেভ হলে তবেই কেবল ফ্রন্টএন্ড স্টেট আপডেট হবে
@@ -71,7 +71,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     if (!requestToDelete) return;
     setIsDeleting(true);
     try {
-      // 🟢 আপনার নতুন রিফ্যাক্টর করা সার্ভার অ্যাকশন কল করা হলো
       const data = await deleteBloodRequest(requestToDelete);
 
       // ব্যাকএন্ডে সফলভাবে ডিলিট হলে (deletedCount > 0) স্টেট থেকে বাদ যাবে
@@ -91,12 +90,16 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   };
 
   // 🛠️ আপনার অরিজিনাল ফিক্সড ফিল্টারিং লজিক (হুবহু অপরিবর্তিত)
-  // ✅ Updated Filtering Logic (Canceled/Cancelled সাপোর্ট সহ)
   const filteredRequests = requests.filter((request) => {
     if (!statusFilter || statusFilter === 'All Status') return true;
 
     const cleanFilter = statusFilter.replace(/\s+/g, '').toLowerCase();
-    const cleanStatus = (request.status || '').replace(/\s+/g, '').toLowerCase();
+
+    // 🟢 SAFE CHECK: status object naki string ta check kore text-tuku newa holo
+    const rawStatus = request.status;
+    const statusString = typeof rawStatus === 'object' ? (rawStatus?.status || "") : (rawStatus || "");
+
+    const cleanStatus = statusString.replace(/\s+/g, '').toLowerCase();
 
     // Canceled / Cancelled এর জন্য বিশেষ হ্যান্ডলিং
     if (cleanFilter === 'canceled' || cleanFilter === 'cancelled') {
@@ -155,8 +158,12 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
             </thead>
             <tbody className="divide-y divide-zinc-800">
               {currentDisplayedRequests.map((request) => {
+                // 🟢 [FIXED - ROW LAYER PROTECT]: Table row text formatting protection
+                const rawRowStatus = request.status;
+                const rowStatusString = typeof rawRowStatus === 'object' ? (rawRowStatus?.status || "") : (rawRowStatus || "");
+                
                 // স্ট্যাটাস ম্যাচিং সহজ করার জন্য সেফটি ভেরিয়েবল তৈরি করা হলো
-                const currentStatusClean = (request.status || '').replace(/\s+/g, '').toLowerCase();
+                const currentStatusClean = rowStatusString.replace(/\s+/g, '').toLowerCase();
 
                 // 🛠️ রিকোয়েস্ট 'inprogress', 'done' অথবা 'completed' হলে ডোনারের ইনফো ট্রিম করবে
                 const isAssignedOrDone = currentStatusClean === 'inprogress' || 
@@ -168,10 +175,10 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                     <td className="p-4">
                       <div className="font-bold text-zinc-200">{request.recipientName}</div>
 
-                      {/* 🛠️ [আপডেটেড লজিক]: ইন-প্রোগ্রেস অথবা ডান/কমপ্লিটেড সব ক্ষেত্রেই ডোনারের নাম ও ইমেল দেখাবে */}
+                      {/* 🛠️ [আপডেটেড ডোনার লজিক]: আসল ডোনার ফিল্ড শো আপ করা */}
                       {isAssignedOrDone ? (
                         <div className="text-xs text-amber-400 mt-0.5 font-medium">
-                          Donor: {request.name || request.donorName || 'Assigned'} ({request.email || request.donorEmail || 'No Email'})
+                          Donor: {request.donorName || 'Assigned'} ({request.donorEmail || 'No Email'})
                         </div>
                       ) : (
                         <div className="text-xs text-zinc-500">Posted by you</div>
@@ -199,7 +206,8 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                               ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
                               : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                         }`}>
-                        • {request.status}
+                        {/* 🟢 [FIXED RENDERING]: Error crash check solved rowStatusString use kore */}
+                        • {rowStatusString || 'Pending'}
                       </span>
                     </td>
 
@@ -239,7 +247,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                                 <button
                                   onClick={() => handleStatusUpdate(request._id, 'Done')}
                                   className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs text-zinc-300 hover:bg-zinc-900 font-medium transition-all"
-                                // biome-ignore lint/a11y/noSvgWithoutTitle: <explanation>
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-emerald-500">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -273,7 +280,7 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                               Edit Request
                             </button>
 
-                            {/* 🛠️ [রিকোয়ারমেন্ট]: Delete Request বাটন */}
+                            {/* Delete Request বাটন */}
                             <button
                               onClick={() => {
                                 setRequestToDelete(request._id);
@@ -346,7 +353,7 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
         onUpdateSuccess={handleUpdateSuccess}
       />
 
-      {/* 🛠 [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডাল UI */}
+      {/* ডিলিট কনফার্মেশন মোডাল UI */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">

@@ -39,114 +39,66 @@ const DonationRequestFormContainer = () => {
     }
   }, [user]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log("=== BLOOD DONATION REQUEST SUBMITTED ===");
-  //   console.log("Form State:", form);
-
-  //   const newErrors = {};
-
-  //   if (!form.name?.trim()) newErrors.name = "Name is required";
-  //   if (!form.email?.trim()) newErrors.email = "Email is required";
-  //   if (!form.recipientName?.trim()) newErrors.recipientName = "Recipient name is required";
-  //   if (!form.bloodGroup) newErrors.bloodGroup = "Blood group is required";
-  //   if (!form.hospitalName?.trim()) newErrors.hospitalName = "Hospital name is required";
-
-  //   if (Object.keys(newErrors).length > 0) {
-  //     setErrors(newErrors);
-  //     return;
-  //   }
-
-  //   setErrors({});
-  //   setSubmitting(true);
-
-  //   const payload = {
-  //     ...form,
-  //     userId: user?._id || user?.id,
-  //     requesterName: user?.name,
-  //     requesterEmail: user?.email,
-  //     role: user?.role,
-  //     status: "Pending",         // Default Status Fixed
-  //     createdAt: new Date().toISOString(),
-  //   };
-
-  //   console.log("Final Payload:", payload);
-
-  //   const result = await createBloodRequests(payload);
-  //   console.log("API Response:", result);
-
-  //   if (result?.insertedId) {
-  //     setForm({
-  //       ...initialForm,
-  //       name: user?.name || "",
-  //       email: user?.email || "",
-  //     });
-  //   }
-
-  //   setSubmitting(false);
-  // };
-
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  console.log("=== BLOOD DONATION REQUEST SUBMITTED ===");
-  console.log("Form State:", form);
+    console.log("=== BLOOD DONATION REQUEST SUBMITTED ===");
+    console.log("Form State:", form);
 
-  const newErrors = {};
+    const newErrors = {};
 
-  if (!form.name?.trim()) newErrors.name = "Name is required";
-  if (!form.email?.trim()) newErrors.email = "Email is required";
-  if (!form.recipientName?.trim()) newErrors.recipientName = "Recipient name is required";
-  if (!form.bloodGroup) newErrors.bloodGroup = "Blood group is required";
-  if (!form.hospitalName?.trim()) newErrors.hospitalName = "Hospital name is required";
+    if (!form.name?.trim()) newErrors.name = "Name is required";
+    if (!form.email?.trim()) newErrors.email = "Email is required";
+    if (!form.recipientName?.trim()) newErrors.recipientName = "Recipient name is required";
+    if (!form.bloodGroup) newErrors.bloodGroup = "Blood group is required";
+    if (!form.hospitalName?.trim()) newErrors.hospitalName = "Hospital name is required";
 
-  if (Object.keys(newErrors).length > 0) {
-    setErrors(newErrors);
-    return;
-  }
-
-  setErrors({});
-  setSubmitting(true);
-
-  try {
-    const payload = {
-      ...form,
-      userId: user?._id || user?.id,
-      requesterName: user?.name,
-      requesterEmail: user?.email,
-      role: user?.role,
-      status: "Pending",
-      createdAt: new Date().toISOString(),
-    };
-
-    console.log("Final Payload:", payload);
-
-    const result = await createBloodRequests(payload);
-
-    console.log("API Response:", result);
-
-
-    if (result?.insertedId) {
-      setForm({
-        ...initialForm,
-        name: user?.name || "",
-        email: user?.email || "",
-      });
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    return result;
+    setErrors({});
+    setSubmitting(true);
+
+    try {
+      const payload = {
+        ...form,
+        userId: user?._id || user?.id,
+        requesterName: user?.name,
+        requesterEmail: user?.email,
+        role: user?.role,
+        status: "Pending",
+        createdAt: new Date().toISOString(),
+      };
+
+      console.log("Final Payload:", payload);
+
+      const result = await createBloodRequests(payload);
+
+      console.log("API Response:", result);
 
 
-  } catch (error) {
-    console.error("Create Request Error:", error);
-    throw error;
+      if (result?.insertedId) {
+        setForm({
+          ...initialForm,
+          name: user?.name || "",
+          email: user?.email || "",
+        });
+      }
 
-  } finally {
-    setSubmitting(false);
-  }
-};
+      return result;
+
+
+    } catch (error) {
+      console.error("Create Request Error:", error);
+      throw error;
+
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <DonationRequestForm
