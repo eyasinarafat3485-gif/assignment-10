@@ -12,7 +12,6 @@ export default function BloodDonationBanner() {
     return (
         <section className="relative w-full min-h-[95vh] flex flex-col justify-between bg-zinc-950 text-white font-sans overflow-hidden">
 
-            {/* Premium Dark Overlay Background with Live CDN Image */}
             <Image
                 src={banner}
                 alt="banner background"

@@ -1,6 +1,6 @@
 'use client'
 import { useSession } from "@/lib/auth-client";
-import { House,  } from "@gravity-ui/icons";
+import { House, } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { FaEdit, FaUser, FaUsers } from "react-icons/fa";
@@ -8,15 +8,12 @@ import { FaHand } from "react-icons/fa6";
 import { TbLayoutSidebarLeftCollapse } from "react-icons/tb";
 
 export default function DashboardSideBar() {
-    const {data: session, isPending} = useSession();
-    if(isPending){
+    const { data: session, isPending } = useSession();
+    if (isPending) {
         return <div>Loading....</div>
     }
     const user = session?.user;
     console.log(user);
-    // const session = await getUserSession();
-    // // সেশন থেকে ইউজার অবজেক্ট বের করা এবং সেফটি হ্যান্ডেল করা
-    // const user = session?.user || session; 
 
     const volunteerNavLinks = [
         { icon: House, href: '/dashboard/volunteer', label: "Dashboard" },

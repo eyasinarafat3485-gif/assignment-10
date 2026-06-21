@@ -23,7 +23,7 @@ export default function BloodStockRadar() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
-        
+
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div className="space-y-3 max-w-2xl">
@@ -54,13 +54,12 @@ export default function BloodStockRadar() {
         {/* Inventory Progress Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {stockData.map((item, index) => {
-            // ডিভাইন স্ট্যাটাস কালার
             const isCritical = item.status === 'Critical';
             const isLow = item.status === 'Low';
-            
+
             let statusColor = 'text-emerald-400 bg-emerald-950/40 border-emerald-900/30';
             let barColor = 'bg-gradient-to-r from-emerald-600 to-teal-500';
-            
+
             if (isCritical) {
               statusColor = 'text-red-400 bg-red-950/60 border-red-900/40 animate-pulse';
               barColor = 'bg-gradient-to-r from-red-600 to-rose-600';
@@ -70,7 +69,7 @@ export default function BloodStockRadar() {
             }
 
             return (
-              <div 
+              <div
                 key={index}
                 className="bg-[#4A4A4A]/20 backdrop-blur-md border border-zinc-800/80 p-5 rounded-2xl flex flex-col justify-between shadow-lg group hover:border-zinc-700 transition-all duration-300"
               >
@@ -97,7 +96,7 @@ export default function BloodStockRadar() {
                 {/* Custom Interactive Progress Bar */}
                 <div className="space-y-1.5 pt-2">
                   <div className="w-full h-3 bg-zinc-900 border border-zinc-800/60 rounded-full overflow-hidden p-[1px]">
-                    <div 
+                    <div
                       className={`h-full rounded-full transition-all duration-1000 ${barColor}`}
                       style={{ width: `${item.percentage}%` }}
                     />

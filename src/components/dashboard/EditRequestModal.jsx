@@ -13,7 +13,6 @@ const EditRequestModal = ({ isOpen, onClose, requestData, onUpdateSuccess }) => 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // মোডাল ওপেন হলে কারেন্ট ডাটা ইনপুট ফিল্ডে সেট হবে
   useEffect(() => {
     if (requestData) {
       setFormData({
@@ -33,69 +32,40 @@ const EditRequestModal = ({ isOpen, onClose, requestData, onUpdateSuccess }) => 
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsSubmitting(true);
 
-//     try {
-//       // আপনার ব্যাকএন্ড আপডেট এপিআই কল করুন এখানে
-//       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bloodRequests/${requestData._id}`, {
-//         method: 'PATCH', // বা PUT আপনার ব্যাকএন্ড লজিক অনুযায়ী
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(formData),
-//       });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
 
-//       if (response.ok) {
-//         const updatedRequest = await response.json();
-//         // প্যারেন্ট পেজের স্টেটকে অটোমেটিক্যালি আপডেট করার জন্য কলব্যাক
-//         onUpdateSuccess(updatedRequest); 
-//         onClose();
-//       } else {
-//         console.error("Failed to update request");
-//       }
-//     } catch (err) {
-//       console.error("Error updating request:", err);
-//     } finally {
-//       setIsSubmitting(false);
-//     }
-//   };
-
-
-const handleSubmit = (e) => {
-  e.preventDefault();
-  setIsSubmitting(true);
-
-  // ব্যাকএন্ড আপডেট এপিআই কল
-  fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bloodRequests/${requestData._id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Failed to update');
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/bloodRequests/${requestData._id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
     })
-    .then((updatedRequest) => {
-      // সাকসেস টোস্ট এবং স্টেট আপডেট
-      toast.success('Request updated successfully!');
-      onUpdateSuccess(updatedRequest);
-      onClose();
-      setIsSubmitting(false);
-    })
-    .catch((err) => {
-      console.error("Error updating request:", err);
-      toast.error('Something went wrong!');
-      setIsSubmitting(false);
-    });
-};
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Failed to update');
+      })
+      .then((updatedRequest) => {
+        toast.success('Request updated successfully!');
+        onUpdateSuccess(updatedRequest);
+        onClose();
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        console.error("Error updating request:", err);
+        toast.error('Something went wrong!');
+        setIsSubmitting(false);
+      });
+  };
 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
       <div className="w-full max-w-2xl rounded-2xl border border-zinc-800 bg-zinc-950 p-6 md:p-8 shadow-2xl">
-        
+
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -119,7 +89,7 @@ const handleSubmit = (e) => {
         {/* Form Formatted as Image 3 */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
+
             {/* Recipient Name */}
             <div>
               <label className="text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-2 block">👤 Recipient Name</label>

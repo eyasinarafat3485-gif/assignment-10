@@ -27,8 +27,8 @@ const Navbar = () => {
     const desktopProfileRef = useRef(null);
 
     // Dynamic Dashboard URL based on user role
-    const dashboardHref = user?.role 
-        ? `/dashboard/${user.role}` 
+    const dashboardHref = user?.role
+        ? `/dashboard/${user.role}`
         : '/dashboard/donor';
 
     // Close dropdown when clicking outside
@@ -133,11 +133,10 @@ const Navbar = () => {
                                                 <Link
                                                     href={dashboardHref}
                                                     onClick={() => setProfileOpen(false)}
-                                                    className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${
-                                                        pathname.startsWith('/dashboard')
+                                                    className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${pathname.startsWith('/dashboard')
                                                             ? 'text-red-500 bg-red-500/10 border border-red-500/20'
                                                             : 'text-zinc-300 hover:text-white hover:bg-zinc-900/50'
-                                                    }`}
+                                                        }`}
                                                 >
                                                     Dashboard
                                                 </Link>
@@ -210,11 +209,10 @@ const Navbar = () => {
                                         <Link
                                             href={link.href}
                                             onClick={() => setIsOpen(false)}
-                                            className={`block px-4 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-200 ${
-                                                isActive 
-                                                    ? 'text-red-500 bg-red-500/10 border border-red-500/20' 
+                                            className={`block px-4 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-200 ${isActive
+                                                    ? 'text-red-500 bg-red-500/10 border border-red-500/20'
                                                     : 'text-zinc-400 hover:text-white hover:bg-zinc-900/50'
-                                            }`}
+                                                }`}
                                         >
                                             {link.name}
                                         </Link>
@@ -230,11 +228,10 @@ const Navbar = () => {
                                         <Link
                                             href={dashboardHref}
                                             onClick={() => setIsOpen(false)}
-                                            className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${
-                                                pathname.startsWith('/dashboard')
+                                            className={`block px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors ${pathname.startsWith('/dashboard')
                                                     ? 'text-red-500 bg-red-500/10 border border-red-500/20'
                                                     : 'text-zinc-300 hover:text-white hover:bg-zinc-900/50'
-                                            }`}
+                                                }`}
                                         >
                                             Dashboard
                                         </Link>
@@ -255,15 +252,15 @@ const Navbar = () => {
 
                             {!user && (
                                 <div className="grid grid-cols-2 gap-2 p-1 pt-1.5">
-                                    <Link 
-                                        href="/login" 
+                                    <Link
+                                        href="/login"
                                         onClick={() => setIsOpen(false)}
                                         className='block text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-850 text-center font-bold text-xs rounded-xl py-2.5 border border-zinc-800 transition-all'
                                     >
                                         Login
                                     </Link>
-                                    <Link 
-                                        href="/register" 
+                                    <Link
+                                        href="/register"
                                         onClick={() => setIsOpen(false)}
                                         className='block bg-gradient-to-b from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white text-center font-black text-xs rounded-xl py-2.5 shadow-md shadow-red-950/40 transition-all cursor-pointer'
                                     >
@@ -274,7 +271,7 @@ const Navbar = () => {
                         </ul>
                     </motion.div>
                 )}
-            </AnimatePresence> 
+            </AnimatePresence>
         </nav>
     );
 };

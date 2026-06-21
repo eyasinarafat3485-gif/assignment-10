@@ -9,7 +9,6 @@ export const getAllBRequests = async (page = 1, limit = 10) => {
     return serverFetch(`/api/allbloodRequests?${queryParams}`);
 };
 
-// ✅ Volunteer-er "PublicRequestsPage" er jonno — notun dedicated route, shob status + search support
 export const getVolunteerAllBRequests = async ({
     page = 1,
     limit = 10,
@@ -28,8 +27,6 @@ export const getVolunteerAllBRequests = async ({
     return serverFetch(url);
 };
 
-
-// ✅ Admin-er "All Blood Donation Request Page" er jonno
 export const getAdminAllBRequests = async ({
     page = 1,
     limit = 10,

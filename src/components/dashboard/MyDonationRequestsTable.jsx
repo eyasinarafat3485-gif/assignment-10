@@ -11,19 +11,15 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // ড্রপডাউন মেনু ট্রাক করার স্টেট (রো আইডি)
   const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // মোডাল স্টেট ম্যানেজমেন্ট (Edit Modal)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
-  // 🛠️ [রিকোয়ারমেন্ট]: ডিলিট কনফার্মেশন মোডালের জন্য স্টেটসমূহ
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Pagination States (আপনার অরিজিনাল কোডের স্টেট)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -46,19 +42,17 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     fetchRequests();
   }, [userId]);
 
-  // 🛠️ [রিকোয়ারমেন্ট]: Status Update করার ফাংশন (Done / Cancelled এর জন্য)
   const handleStatusUpdate = async (requestId, newStatus) => {
     try {
       const result = await updateRequestStatus(requestId, newStatus);
 
-      // ব্যাকএন্ডে সাকসেসফুলি সেভ হলে তবেই কেবল ফ্রন্টএন্ড স্টেট আপডেট হবে
       if (result) {
         setRequests((prevRequests) =>
           prevRequests.map((req) =>
             req._id === requestId ? { ...req, status: newStatus } : req
           )
         );
-        setActiveDropdown(null); // ড্রপডাউন বন্ধ করার জন্য
+        setActiveDropdown(null);
       }
     } catch (error) {
       console.error("Error updating status via lib function:", error);
@@ -66,14 +60,12 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     }
   };
 
-  // 🛠️ [রিকোয়ারমেন্ট]: Request Delete করার কনফার্মেশন ফাংশন
   const handleConfirmDelete = async () => {
     if (!requestToDelete) return;
     setIsDeleting(true);
     try {
       const data = await deleteBloodRequest(requestToDelete);
 
-      // ব্যাকএন্ডে সফলভাবে ডিলিট হলে (deletedCount > 0) স্টেট থেকে বাদ যাবে
       if (data && data.deletedCount > 0) {
         setRequests((prevRequests) => prevRequests.filter((req) => req._id !== requestToDelete));
         setIsDeleteModalOpen(false);
@@ -89,28 +81,23 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
     }
   };
 
-  // 🛠️ আপনার অরিজিনাল ফিক্সড ফিল্টারিং লজিক (হুবহু অপরিবর্তিত)
   const filteredRequests = requests.filter((request) => {
     if (!statusFilter || statusFilter === 'All Status') return true;
 
     const cleanFilter = statusFilter.replace(/\s+/g, '').toLowerCase();
 
-    // 🟢 SAFE CHECK: status object naki string ta check kore text-tuku newa holo
     const rawStatus = request.status;
     const statusString = typeof rawStatus === 'object' ? (rawStatus?.status || "") : (rawStatus || "");
 
     const cleanStatus = statusString.replace(/\s+/g, '').toLowerCase();
 
-    // Canceled / Cancelled এর জন্য বিশেষ হ্যান্ডলিং
     if (cleanFilter === 'canceled' || cleanFilter === 'cancelled') {
       return cleanStatus === 'canceled' || cleanStatus === 'cancelled';
     }
 
-    // অন্য সব স্ট্যাটাসের জন্য সাধারণ ম্যাচিং
     return cleanStatus === cleanFilter;
   });
 
-  // ফিল্টার করা ডাটার ওপর ভিত্তি করে পেজিনেশন ক্যালকুলেশন (আপনার কোডের লজিক)
   const totalFilteredRequests = filteredRequests.length;
   const totalPages = Math.ceil(totalFilteredRequests / itemsPerPage);
 
@@ -118,7 +105,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentDisplayedRequests = filteredRequests.slice(indexOfFirstItem, indexOfLastItem);
 
-  // ফিল্টার চেঞ্চ হলে পেজ ১ নম্বরে রিসেট হবে (আপনার কোডের লজিক)
   useEffect(() => {
     setCurrentPage(1);
   }, [statusFilter]);
@@ -158,24 +144,20 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
             </thead>
             <tbody className="divide-y divide-zinc-800">
               {currentDisplayedRequests.map((request) => {
-                // 🟢 [FIXED - ROW LAYER PROTECT]: Table row text formatting protection
                 const rawRowStatus = request.status;
                 const rowStatusString = typeof rawRowStatus === 'object' ? (rawRowStatus?.status || "") : (rawRowStatus || "");
-                
-                // স্ট্যাটাস ম্যাচিং সহজ করার জন্য সেফটি ভেরিয়েবল তৈরি করা হলো
+
                 const currentStatusClean = rowStatusString.replace(/\s+/g, '').toLowerCase();
 
-                // 🛠️ রিকোয়েস্ট 'inprogress', 'done' অথবা 'completed' হলে ডোনারের ইনফো ট্রিম করবে
-                const isAssignedOrDone = currentStatusClean === 'inprogress' || 
-                                         currentStatusClean === 'done' || 
-                                         currentStatusClean === 'completed';
+                const isAssignedOrDone = currentStatusClean === 'inprogress' ||
+                  currentStatusClean === 'done' ||
+                  currentStatusClean === 'completed';
 
                 return (
                   <tr key={request._id} className="hover:bg-zinc-800/30 transition-colors">
                     <td className="p-4">
                       <div className="font-bold text-zinc-200">{request.recipientName}</div>
 
-                      {/* 🛠️ [আপডেটেড ডোনার লজিক]: আসল ডোনার ফিল্ড শো আপ করা */}
                       {isAssignedOrDone ? (
                         <div className="text-xs text-amber-400 mt-0.5 font-medium">
                           Donor: {request.donorName || 'Assigned'} ({request.donorEmail || 'No Email'})
@@ -199,14 +181,13 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                     </td>
                     <td className="p-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${currentStatusClean === 'pending'
-                          ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
-                          : currentStatusClean === 'canceled' || currentStatusClean === 'cancelled'
-                            ? 'bg-rose-500/10 text-rose-500 border-rose-500/20'
-                            : currentStatusClean === 'inprogress'
-                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
-                              : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                        ? 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+                        : currentStatusClean === 'canceled' || currentStatusClean === 'cancelled'
+                          ? 'bg-rose-500/10 text-rose-500 border-rose-500/20'
+                          : currentStatusClean === 'inprogress'
+                            ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                            : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                         }`}>
-                        {/* 🟢 [FIXED RENDERING]: Error crash check solved rowStatusString use kore */}
                         • {rowStatusString || 'Pending'}
                       </span>
                     </td>
@@ -241,7 +222,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                               View Details
                             </Link>
 
-                            {/* 🛠️ [রিকোয়ারমেন্ট]: স্ট্যাটাস 'In Progress' হলেই কেবল Done এবং Cancel বাটন দুটি মেনুতে আসবে */}
                             {currentStatusClean === 'inprogress' && (
                               <>
                                 <button
@@ -280,7 +260,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
                               Edit Request
                             </button>
 
-                            {/* Delete Request বাটন */}
                             <button
                               onClick={() => {
                                 setRequestToDelete(request._id);
@@ -353,7 +332,6 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
         onUpdateSuccess={handleUpdateSuccess}
       />
 
-      {/* ডিলিট কনফার্মেশন মোডাল UI */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-950 p-6 shadow-2xl">

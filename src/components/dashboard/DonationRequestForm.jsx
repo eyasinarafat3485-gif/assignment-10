@@ -16,9 +16,7 @@ import {
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
-// Full Bangladesh Location Data: Division -> District -> Upazilas
-// ------------------------------------------------------------------------
-
+// Full Bangladesh Location Data: Division -> District -> Upazilas 
 const bdLocationData = {
   Dhaka: {
     Dhaka: ['Dhamrai', 'Dohar', 'Keraniganj', 'Nawabganj', 'Savar'],
@@ -312,41 +310,41 @@ const DonationRequestForm = ({ form, setForm, errors, submitting, onSubmit }) =>
   };
 
   const router = useRouter();
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
   const user = session?.user;
 
-const handleFormSubmit = async (e) => {
-  e.preventDefault(); 
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
 
-  if (!validate()) return;
+    if (!validate()) return;
 
-  try {
-    const result = await onSubmit(e, form);
+    try {
+      const result = await onSubmit(e, form);
 
-    if (result?.insertedId) {
-      toast.success('Blood Donation Request Successfully created!', {
+      if (result?.insertedId) {
+        toast.success('Blood Donation Request Successfully created!', {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        setTimeout(() => {
+          const role = user?.role || 'donor';
+          router.push(`/dashboard/${role}/my-requests`);
+        }, 1000);
+
+      } else {
+        throw new Error("Request creation failed");
+      }
+
+    } catch (error) {
+      console.error("Submit Error:", error);
+
+      toast.error('Something went wrong. Please try again.', {
         position: "top-right",
         autoClose: 3000,
       });
-
-      setTimeout(() => {
-        const role = user?.role || 'donor';
-        router.push(`/dashboard/${role}/my-requests`);
-      }, 1000);
-
-    } else {
-      throw new Error("Request creation failed");
     }
-
-  } catch (error) {
-    console.error("Submit Error:", error);
-
-    toast.error('Something went wrong. Please try again.', {
-      position: "top-right",
-      autoClose: 3000,
-    });
-  }
-};
+  };
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">

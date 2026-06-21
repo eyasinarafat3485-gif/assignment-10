@@ -6,8 +6,7 @@ import Image from 'next/image';
 import { BiHeart, BiPhoneCall, BiEnvelope, BiMap } from 'react-icons/bi';
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { FiArrowUp } from 'react-icons/fi';
-import logo from '../../public/blood-logo.jpg'; // আপনার লোগোর পাথ অনুযায়ী পরিবর্তন করতে পারেন
-
+import logo from '../../public/blood-logo.jpg';
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -22,10 +21,10 @@ export default function Footer() {
   return (
     <footer className="w-full bg-zinc-950/70 backdrop-blur-md text-zinc-400 font-sans relative">
       <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
-        
+
         {/* Main Grid Network */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          
+
           {/* Column 1: Brand & Mission */}
           <div className="space-y-4">
             <Link href="/" className="flex gap-2 items-center hover:opacity-90 transition-opacity">
@@ -45,8 +44,8 @@ export default function Footer() {
                 { icon: <FaLinkedinIn />, href: '/' },
                 { icon: <FaInstagram />, href: '/' },
               ].map((social, index) => (
-                <a 
-                  key={index} 
+                <a
+                  key={index}
                   href={social.href}
                   className="w-9 h-9 flex items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white hover:border-red-500/50 hover:bg-red-600/20 transition-all duration-300"
                 >

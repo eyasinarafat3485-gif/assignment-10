@@ -1,6 +1,3 @@
-
-
-
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -27,9 +24,8 @@ const ProfilePage = () => {
   const router = useRouter();
   // Edit Mode state tracking
   const [isEditing, setIsEditing] = useState(false);
-  const [isUploading, setIsUploading] = useState(false); // ইমেজ আপলোডিং স্টেট
+  const [isUploading, setIsUploading] = useState(false);
 
-  // Hidden file input-এর জন্য রেফ
   const fileInputRef = useRef(null);
 
   // Form input state
@@ -86,7 +82,6 @@ const ProfilePage = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // ফাইল সাইজ ৫MB ভ্যালিডেশন
     if (file.size > 5 * 1024 * 1024) {
       toast.error("Image size must be up to 5MB");
       return;
@@ -98,7 +93,7 @@ const ProfilePage = () => {
 
     try {
       const IMGBBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API;
-      
+
       if (!IMGBBB_API_KEY) {
         toast.error('Image upload API key is missing.');
         return;
@@ -112,9 +107,7 @@ const ProfilePage = () => {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // সফলভাবে আপলোড হলে সাময়িকভাবে স্টেট আপডেট হবে
         setFormData((prev) => ({ ...prev, image: data.data.url }));
-        // toast.success("Image uploaded successfully! Click Save to keep changes.");
       } else {
         const errMsg = data.error?.message || "Failed to upload image.";
         toast.error(`ImgBB Error: ${errMsg}`);
@@ -140,7 +133,7 @@ const ProfilePage = () => {
         bloodGroup: formData.bloodGroup,
         district: formData.district,
         upazila: formData.upazila,
-        image: formData.image, // নতুন ছবির URL ডাটাবেজে যাবে
+        image: formData.image,
         status: formData.status,
       };
 
@@ -155,9 +148,8 @@ const ProfilePage = () => {
           ...updateData,
         }));
 
-        // 🔥 নেভবার এবং পুরো অ্যাপের সার্ভার ডাটা ইনস্ট্যান্ট আপডেট করার ম্যাজিক লাইন
         router.refresh();
-        
+
       } else {
         toast.error(result.message || "Update failed");
       }
@@ -233,7 +225,7 @@ const ProfilePage = () => {
           <Card className="overflow-hidden border rounded-md border-white/10 bg-white/5 shadow-2xl backdrop-blur-xl lg:col-span-2">
             <div className="relative h-40 bg-gradient-to-r rounded-md from-red-950 via-rose-900 to-red-600">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_30%)]" />
-              
+
               {/* Profile Image Component with Edit Option */}
               <div className="absolute -bottom-14 left-6 group">
                 <div className="relative h-28 w-28">
@@ -242,8 +234,7 @@ const ProfilePage = () => {
                     alt={formData.name}
                     className={`h-full w-full border-4 border-zinc-950 rounded-3xl bg-white text-2xl font-bold text-red-500 object-cover ${isUploading ? 'opacity-40 animate-pulse' : ''}`}
                   />
-                  
-                  {/* শুধুমাত্র Edit Mode চালু থাকলে ক্যামেরার আইকনটি আসবে */}
+
                   {isEditing && (
                     <>
                       <button
@@ -417,9 +408,8 @@ const InfoBox = ({ icon, label, name, value, isEditing, disabled = false, onChan
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={`w-full bg-zinc-900 border ${
-            disabled ? 'border-zinc-800 text-zinc-500 cursor-not-allowed' : 'border-white/20 text-white focus:border-red-500'
-          } rounded-xl px-3 py-1.5 text-base font-medium outline-none transition`}
+          className={`w-full bg-zinc-900 border ${disabled ? 'border-zinc-800 text-zinc-500 cursor-not-allowed' : 'border-white/20 text-white focus:border-red-500'
+            } rounded-xl px-3 py-1.5 text-base font-medium outline-none transition`}
         />
       ) : (
         <p className="text-base font-semibold text-white px-1 py-1.5">{value}</p>
