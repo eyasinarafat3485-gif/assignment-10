@@ -315,13 +315,38 @@ const DonationRequestForm = ({ form, setForm, errors, submitting, onSubmit }) =>
   const { data: session } = useSession(); 
   const user = session?.user;
 
-  const handleFormSubmit = (e) => {
-    if (!validate()) return;
-    onSubmit(e, form);
-    toast.success('Blood Donation Request Successfully done');
-    const role = user?.role || 'donor';
-    router.push(`/dashboard/${role}/my-requests`);
-  };
+const handleFormSubmit = async (e) => {
+  e.preventDefault(); 
+
+  if (!validate()) return;
+
+  try {
+    const result = await onSubmit(e, form);
+
+    if (result?.insertedId) {
+      toast.success('Blood Donation Request Successfully created!', {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      setTimeout(() => {
+        const role = user?.role || 'donor';
+        router.push(`/dashboard/${role}/my-requests`);
+      }, 1000);
+
+    } else {
+      throw new Error("Request creation failed");
+    }
+
+  } catch (error) {
+    console.error("Submit Error:", error);
+
+    toast.error('Something went wrong. Please try again.', {
+      position: "top-right",
+      autoClose: 3000,
+    });
+  }
+};
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">

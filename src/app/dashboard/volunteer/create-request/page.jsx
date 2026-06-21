@@ -2,7 +2,6 @@
 import { useSession } from '@/lib/auth-client';
 import React from 'react';
 import DonationRequestFormContainer from '@/components/dashboard/DonationRequestFormContainer';
-// import DonationRequestFormContainer from './DonationRequestFormContainer';
 
 const CreateDonationRequestPage = () => {
     const {data: session, isPending} = useSession();
@@ -14,7 +13,7 @@ const CreateDonationRequestPage = () => {
         {user?.role}
       </h2>
 
-      <div className="mx-auto max-w-5xl ml-8">
+      <div className="mx-auto ml-8">
         <div className="mb-8">
           <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
             New <span className="text-red-500">Donation Request</span>
