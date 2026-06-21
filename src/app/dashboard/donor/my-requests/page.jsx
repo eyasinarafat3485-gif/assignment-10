@@ -51,11 +51,10 @@ const DonorMyRequestsPage = () => {
                       setStatusFilter(status);
                       setIsFilterOpen(false);
                     }}
-                    className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
-                      statusFilter === status 
-                        ? 'bg-zinc-900 text-red-500' 
+                    className={`flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-all ${statusFilter === status
+                        ? 'bg-zinc-900 text-red-500'
                         : 'text-zinc-300 hover:bg-zinc-900'
-                    }`}
+                      }`}
                   >
                     {statusFilter === status && <span className="text-red-500">✓</span>}
                     {status}
@@ -67,7 +66,6 @@ const DonorMyRequestsPage = () => {
         </div>
       </div>
 
-      {/* সাবকম্পোনেন্ট কল - এখানে statusFilter পাস করা হয়েছে */}
       {!isPending && currentUserId && (
         <MyDonationRequestsTable userId={currentUserId} role={user?.role} statusFilter={statusFilter} />
       )}

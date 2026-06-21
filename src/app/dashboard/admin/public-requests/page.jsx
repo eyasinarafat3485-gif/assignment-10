@@ -75,21 +75,32 @@ const AdminAllRequestsPage = () => {
         }
     };
 
-    const handleStatusUpdate = async (reqId, newStatus) => {
-        if (updatingId) return;
-        setUpdatingId(reqId);
+   const handleStatusUpdate = async (reqId, newStatus) => {
+    if (updatingId) return;
 
-        try {
-            await updateBloodRequest(reqId, { status: newStatus });
-            alert(`Request marked as ${newStatus}`);
-            fetchRequests();
-        } catch (error) {
-            console.error(error);
-            alert("Failed to update status");
-        } finally {
-            setUpdatingId(null);
-        }
-    };
+    setUpdatingId(reqId);
+
+    try {
+        const updateData = {
+            status: newStatus,
+            donorName: user?.name || "",
+            donorEmail: user?.email || "",
+        };
+
+        await updateBloodRequest(reqId, updateData);
+
+        toast.success(`Request marked as ${newStatus}`);
+
+        fetchRequests();
+
+    } catch (error) {
+        console.error(error);
+        toast.error("Failed to update status");
+
+    } finally {
+        setUpdatingId(null);
+    }
+};
 
     const handleDelete = async (reqId) => {
         if (updatingId) return;
