@@ -9,7 +9,6 @@ const DonorMyRequestsPage = () => {
   const user = session?.user;
   const currentUserId = user?.id || user?._id || user?.userId;
 
-  // স্ট্যাটাস ফিল্টারের স্টেট এবং ড্রপডাউন ওপেন/ক্লোজ স্টেট
   const [statusFilter, setStatusFilter] = useState('All Status');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -28,7 +27,6 @@ const DonorMyRequestsPage = () => {
           <p className="text-white mt-1">Track my all personal blood requests overview</p>
         </div>
 
-        {/* নতুন ফিল্টার ড্রপডাউন (১ম ও ২য় ইমেজের মতো ডিজাইন) */}
         <div className="relative">
           <button
             onClick={() => setIsFilterOpen(!isFilterOpen)}
