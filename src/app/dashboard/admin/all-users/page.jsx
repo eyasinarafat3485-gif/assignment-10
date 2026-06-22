@@ -426,9 +426,9 @@ const AllUsersPage = () => {
                                         <tr key={row._id} className='hover:bg-zinc-800/40 transition-colors group'>
                                             {/* Profile */}
                                             <td className='p-4 flex items-center gap-3'>
-                                                {row.avatar ? (
+                                                {row?.image ? (
                                                     <img
-                                                        src={row.avatar}
+                                                        src={row?.image}
                                                         alt={row.name}
                                                         className='w-10 h-10 rounded-xl object-cover border border-zinc-700'
                                                     />
