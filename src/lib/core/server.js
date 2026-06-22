@@ -40,7 +40,7 @@ export const serverMutationPatch = async (path, data) => {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            ... await authHeadaer()
+            // ... await authHeadaer()
         },
         body: JSON.stringify(data)
     });
@@ -53,7 +53,7 @@ export const serverMutationDelete = async (path) => {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            ... await authHeadaer()
+            // ... await authHeadaer()
         }
     });
 

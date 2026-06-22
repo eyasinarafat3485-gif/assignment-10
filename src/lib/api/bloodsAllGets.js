@@ -24,7 +24,7 @@ export const getVolunteerAllBRequests = async ({
         url += `&search=${encodeURIComponent(search)}`;
     }
 
-    return protectedFatch(url);
+    return serverFetch(url);
 };
 
 export const getAdminAllBRequests = async ({
