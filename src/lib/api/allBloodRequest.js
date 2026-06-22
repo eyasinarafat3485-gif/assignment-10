@@ -5,7 +5,7 @@ import {
     serverMutationDelete 
 } from "../core/server";
 
-export const getMyBloodRequests = async (userId, page = 1, limit = 5) => {
+export const getMyBloodRequests = async (userId, page = 1, limit = 10) => {
     return serverFetch(`/api/my/bloodRequests?userId=${userId}&page=${page}&limit=${limit}`);
 }
 

@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/server";
+import { protectedFatch, serverFetch } from "../core/server";
 
 export const getAllBRequests = async (page = 1, limit = 10) => {
     const queryParams = new URLSearchParams({
@@ -24,7 +24,7 @@ export const getVolunteerAllBRequests = async ({
         url += `&search=${encodeURIComponent(search)}`;
     }
 
-    return serverFetch(url);
+    return protectedFatch(url);
 };
 
 export const getAdminAllBRequests = async ({
