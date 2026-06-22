@@ -19,8 +19,7 @@ const DonorHomePage = () => {
                 </h2>
                 <h1 className="text-2xl md:text-5xl font-bold text-white">
                     Welcome, <span className="text-red-500">
-                        {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Donor'}
-                    </span>!
+                        {user?.name ? user.name.charAt(0).toUpperCase()+user.name.slice(1):'Donor'}</span>!
                 </h1>
                 <p className="text-lg text-gray-300 mt-2">
                     Manage your activities and help save lives today.

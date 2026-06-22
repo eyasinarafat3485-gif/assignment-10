@@ -75,32 +75,32 @@ const AdminAllRequestsPage = () => {
         }
     };
 
-   const handleStatusUpdate = async (reqId, newStatus) => {
-    if (updatingId) return;
+    const handleStatusUpdate = async (reqId, newStatus) => {
+        if (updatingId) return;
 
-    setUpdatingId(reqId);
+        setUpdatingId(reqId);
 
-    try {
-        const updateData = {
-            status: newStatus,
-            donorName: user?.name || "",
-            donorEmail: user?.email || "",
-        };
+        try {
+            const updateData = {
+                status: newStatus,
+                donorName: user?.name || "",
+                donorEmail: user?.email || "",
+            };
 
-        await updateBloodRequest(reqId, updateData);
+            await updateBloodRequest(reqId, updateData);
 
-        toast.success(`Request marked as ${newStatus}`);
+            toast.success(`Request marked as ${newStatus}`);
 
-        fetchRequests();
+            fetchRequests();
 
-    } catch (error) {
-        console.error(error);
-        toast.error("Failed to update status");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update status");
 
-    } finally {
-        setUpdatingId(null);
-    }
-};
+        } finally {
+            setUpdatingId(null);
+        }
+    };
 
     const handleDelete = async (reqId) => {
         if (updatingId) return;
@@ -120,7 +120,6 @@ const AdminAllRequestsPage = () => {
         }
     };
 
-    // ✅ Edit modal open kora, current data diye form pre-fill kora
     const handleEditOpen = (req) => {
         setEditingRequest(req);
         setEditForm({
@@ -143,7 +142,6 @@ const AdminAllRequestsPage = () => {
         setEditForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    // ✅ Save - database e PATCH kore update kore
     const handleEditSave = async () => {
         if (!editingRequest) return;
         setSaving(true);
@@ -170,12 +168,18 @@ const AdminAllRequestsPage = () => {
 
     return (
         <div className="p-4 md:p-8 min-h-screen text-zinc-100">
+            <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
+                {user?.role}
+            </h2>
             <div className="flex justify-between items-center mb-8">
+
                 <div>
-                    <h1 className="text-3xl font-black tracking-tight">All Blood Requests</h1>
-                    <p className="text-zinc-400 mt-1">Admin Dashboard - Manage All Users' Requests</p>
+                    <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-zinc-100 ">
+                        All Blood <span className='text-red-500'>Requests
+                        </span>!
+                    </h1>
+                    <p className="text-white mt-1">Admin Dashboard - Manage All Users' Requests</p>
                 </div>
-                <h2 className="text-xl text-red-500 font-bold uppercase">{user?.role}</h2>
             </div>
 
             {/* Search & Filter */}

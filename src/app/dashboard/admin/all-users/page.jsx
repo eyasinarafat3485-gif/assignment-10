@@ -354,15 +354,15 @@ const AllUsersPage = () => {
             ];
         }
 
-        return []; // kono match na hole empty menu
+        return []; 
     };
 
     return (
-        <div className='min-h-screen bg-[#4a4a4d] text-zinc-100 p-6 ml-5'>
+        <div className='min-h-screen bg-zinc-600/40 text-zinc-100 p-6 ml-2'>
             {/* Header */}
             <div className='flex justify-between items-center mb-6'>
                 <div>
-                    <h1 className='text-2xl font-bold text-white'>
+                    <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-zinc-100">
                         All Users <span className='text-red-500'>Management Page</span>!
                     </h1>
                     <p className='text-zinc-300 mt-2 text-sm md:text-base'>
