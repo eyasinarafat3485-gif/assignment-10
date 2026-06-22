@@ -651,7 +651,6 @@ const bdLocationData = {
     }
 };
 
-// ==========================================
 export default function RegisterForm() {
     const router = useRouter();
     const fileInputRef = useRef(null);
@@ -662,7 +661,7 @@ export default function RegisterForm() {
         email: '',
         phone: '+880 ',
         gender: '',
-        role: 'donor', // ডিফল্ট রোল ফিক্সড (donor / volunteer)
+        role: 'donor', 
         division: '',
         district: '',
         upazila: '',
