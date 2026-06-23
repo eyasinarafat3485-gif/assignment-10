@@ -16,15 +16,15 @@ const DonorMyRequestsPage = () => {
 
   return (
     <div className="min-h-screen text-zinc-100 ">
-      <h2 className='text-xl text-red-500 font-bold text-right uppercase mr-8 mt-4'>
+      <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
         {user?.role}
       </h2>
       <div className="flex justify-between items-center p-4 md:p-8">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
+        <div className='-ml-3 md:-m-0'>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
             My <span className="text-red-500"> All Requests</span>
           </h1>
-          <p className="text-white mt-1">Track my all personal blood requests overview</p>
+          <p className="text-white mt-2">Track my all personal blood requests overview</p>
         </div>
 
         <div className="relative">

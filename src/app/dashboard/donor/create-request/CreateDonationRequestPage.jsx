@@ -212,7 +212,7 @@ if (!isPending && user?.status?.toLowerCase() === 'blocked') {
 
       <div className="mx-auto  md:ml-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
             New <span className="text-red-500">Donation Request</span>
           </h1>
           <p className="mt-2 text-sm text-white">
