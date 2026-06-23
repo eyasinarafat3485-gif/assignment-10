@@ -76,8 +76,8 @@ const PublicRequestsPage = () => {
     return (
         <div className="md:ml-8 min-h-screen text-zinc-100">
             <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
-        {user?.role}
-      </h2>
+                {user?.role}
+            </h2>
             <div className="flex md:p-8 justify-between items-center mb-2">
                 <div className='md:-ml-8'>
                     <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
@@ -86,7 +86,7 @@ const PublicRequestsPage = () => {
 
                     <p className="text-white mt-2">Volunteer Dashboard - View & Update Status</p>
                 </div>
-                
+
             </div>
 
             {/* Search & Filter */}
@@ -146,6 +146,7 @@ const PublicRequestsPage = () => {
                                         <tr key={req._id} className="hover:bg-zinc-950/50 transition-colors">
                                             <td className="p-4">
                                                 <div className="font-medium">{req.recipientName}</div>
+                                                <div className="text-xs text-zinc-500 mt-0.5">Requested by: {req.requesterName || 'N/A'}</div>
                                             </td>
                                             <td className="p-4 text-zinc-300">
                                                 {req.district}{req.upazila ? `, ${req.upazila}` : ''}
@@ -160,9 +161,9 @@ const PublicRequestsPage = () => {
                                             </td>
                                             <td className="p-4">
                                                 <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                        cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                                                            cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
-                                                                'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                    cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                                        cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                                            'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                                                     }`}>
                                                     {typeof req.status === 'object' ? req.status?.status : req.status || 'Pending'}
                                                 </span>
