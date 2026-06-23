@@ -18,11 +18,11 @@ export default function BloodStockRadar() {
   ];
 
   return (
-    <section className="w-full py-10 bg-zinc-950/70 text-white font-sans  relative overflow-hidden">
+    <section className="w-full py-5 md:py-10 bg-zinc-950/70 text-white font-sans  relative overflow-hidden">
       {/* Background Pulse Effect */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
+      <div className=" mx-auto px-5 lg:px-8 pt-5 md:pt-12 pb-8">
 
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">

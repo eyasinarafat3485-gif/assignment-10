@@ -22,11 +22,11 @@ export default function CompatibilitySection() {
   const bloodGroups = Object.keys(bloodData);
 
   return (
-    <section className="relative w-full py-10 bg-zinc-950/70 text-white font-sans overflow-hidden">
-      <div className=" mx-auto px-5 lg:px-8 pt-16 pb-8">
+    <section className="relative w-full py-5 md:py-10 bg-zinc-950/70 text-white font-sans overflow-hidden">
+      <div className=" mx-auto px-5 lg:px-8 pt-5 md:pt-12 pb-8">
         
         {/* Section Header */}
-        <div className=" mx-auto mb-14 space-y-4">
+        <div className=" mx-auto mb-7 md:mb-14 space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/80 backdrop-blur-md border border-zinc-800 text-xs font-bold text-zinc-300 uppercase tracking-wider">
             <BiDna size={14} className="text-red-500 animate-spin" style={{ animationDuration: '6s' }} />
             Compatibility Guide
