@@ -119,7 +119,7 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const endResult = Math.min(currentPage * itemsPerPage, totalFilteredRequests);
 
   return (
-    <div className="relative ml-8 mr-8">
+    <div className="relative md:ml-8 ">
       <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900/50 backdrop-blur-md">
         {isLoading ? (
           <div className="p-10 text-center text-zinc-400">

@@ -8,7 +8,6 @@ const VolunteerMyRequestsPage = () => {
   const { data: session, isPending } = useSession();
   const user = session?.user;
   
-  // ডাইনামিক আইডি হ্যান্ডলিং (id, _id, বা userId যা-ই সেশনে থাকুক)
   const currentUserId = user?.id || user?._id || user?.userId;
 
   return (
@@ -17,9 +16,9 @@ const VolunteerMyRequestsPage = () => {
               {user?.role}
             </h2>
       {/* Top Header & Role Badge */}
-      <div className="flex justify-between items-center p-4 md:p-8">
+      <div className="flex justify-between items-center p-4 md:px-10 -ml-3">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
             My All <span className="text-red-500">Donation Requests</span>
           </h1>
           <p className="text-lg mt-2 text-zinc-400">
@@ -29,7 +28,6 @@ const VolunteerMyRequestsPage = () => {
         
       </div>
 
-      {/* সাবকম্পোনেন্ট কল — যখন সেশন লোডিং শেষ হবে এবং আইডি পাওয়া যাবে */}
       {isPending ? (
         <div className="p-10 text-center text-zinc-400">
           <span className="loading loading-spinner loading-md mb-2 block mx-auto text-red-500"></span>

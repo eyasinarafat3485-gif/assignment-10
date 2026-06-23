@@ -7,11 +7,11 @@ const AdminHomePage = () => {
     const user = session?.user;
     console.log(user, isPending);
     return (
-        <div className='ml-5'>
+        <div className='md:ml-8'>
             <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
                 {user?.role}
             </h2>
-            <h1 className='text-2xl md:text-5xl font-bold text-white'>
+            <h1 className='text-2xl md:text-4xl font-bold text-white'>
                 Welcome, <span className='text-red-500'>
                     {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : ''}
                 </span>!

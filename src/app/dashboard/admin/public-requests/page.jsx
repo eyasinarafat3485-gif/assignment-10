@@ -167,15 +167,15 @@ const AdminAllRequestsPage = () => {
     };
 
     return (
-        <div className="p-4 md:p-8 min-h-screen text-zinc-100">
+        <div className=" md:p-8 min-h-screen text-zinc-100">
             <h2 className='text-xl text-red-500 font-bold text-right uppercase'>
                 {user?.role}
             </h2>
             <div className="flex justify-between items-center mb-8">
 
                 <div>
-                    <h1 className="text-2xl md:text-5xl font-bold tracking-tight text-zinc-100 ">
-                        All Blood <span className='text-red-500'>Requests
+                    <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-100 ">
+                        All Public <span className='text-red-500'>Requests
                         </span>!
                     </h1>
                     <p className="text-white mt-1">Admin Dashboard - Manage All Users' Requests</p>

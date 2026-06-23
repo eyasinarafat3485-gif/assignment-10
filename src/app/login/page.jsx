@@ -45,13 +45,13 @@ export default function LoginSection() {
   };
 
   return (
-    <section className="w-full py-16 bg-zinc-950/70 backdrop-blur-md text-white font-sans flex items-center justify-center relative overflow-hidden">
+    <section className="w-full py-16 px-5 bg-zinc-950/70 backdrop-blur-md text-white font-sans flex items-center justify-center relative overflow-hidden">
       
       {/* Background gradient */}
       <div className="absolute inset-0" />
 
       {/* Main Container */}
-      <div className="max-w-5xl w-full bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 min-h-[680px] border border-white/5 relative z-10">
+      <div className="max-w-5xl w-full  bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl grid grid-cols-1 md:grid-cols-12 min-h-[680px] border border-white/5 relative z-10">
         
         {/* Left Pane - Branding */}
         <div className="md:col-span-5 bg-zinc-950/70 p-10 flex flex-col justify-between relative text-white">
@@ -94,7 +94,7 @@ export default function LoginSection() {
 
         {/* Right Pane: Login Form */}
         <div className="md:col-span-7 p-10 md:p-14 flex flex-col justify-center bg-zinc-900">
-          <div className="w-full max-w-md mx-auto space-y-8">
+          <div className="w-full max-w-md px-5 mx-auto space-y-8">
             
             <div className="text-center md:text-left">
               <h1 className="text-3xl font-bold text-white tracking-tight">Welcome Back</h1>

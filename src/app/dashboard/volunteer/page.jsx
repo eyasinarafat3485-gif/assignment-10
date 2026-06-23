@@ -37,7 +37,7 @@ const VolunteerHomePage = () => {
     const currentUserId = user?.id || user?._id || user?.userId;
 
     return (
-        <div className="ml-5 space-y-6">
+        <div className="md:ml-5 space-y-6">
             {/* Header */}
             <div>
                 <h2 className="text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase">

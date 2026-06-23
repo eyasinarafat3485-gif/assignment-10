@@ -56,7 +56,6 @@ export default function RegisterSection() {
               </p>
             </div>
 
-            {/* আলাদা করা ফর্মটি এখানে রেন্ডার করা হয়েছে */}
             <RegisterForm />
           </div>
 
