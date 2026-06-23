@@ -67,20 +67,26 @@ const PublicRequestsPage = () => {
     };
 
     const getCleanStatus = (rawStatus) => {
-        const statusString = typeof rawStatus === 'object' 
-            ? (rawStatus?.status || "") 
+        const statusString = typeof rawStatus === 'object'
+            ? (rawStatus?.status || "")
             : (rawStatus || "");
         return statusString.replace(/\s+/g, '').toLowerCase();
     };
 
     return (
-        <div className="p-4 md:p-8 min-h-screen text-zinc-100">
-            <div className="flex justify-between items-center mb-8">
-                <div>
-                    <h1 className="text-3xl font-black tracking-tight">All Blood Requests</h1>
-                    <p className="text-zinc-400 mt-1">Volunteer Dashboard - View & Update Status</p>
+        <div className="md:ml-8 min-h-screen text-zinc-100">
+            <h2 className='text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase'>
+        {user?.role}
+      </h2>
+            <div className="flex md:p-8 justify-between items-center mb-2">
+                <div className='md:-ml-8'>
+                    <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
+                        All Public<span className="text-red-500"> Request</span>
+                    </h1>
+
+                    <p className="text-white mt-2">Volunteer Dashboard - View & Update Status</p>
                 </div>
-                <h2 className="text-xl text-red-500 font-bold uppercase">{user?.role}</h2>
+                
             </div>
 
             {/* Search & Filter */}
@@ -153,12 +159,11 @@ const PublicRequestsPage = () => {
                                                 {req.requiredDate} at {req.requiredTime}
                                             </td>
                                             <td className="p-4">
-                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${
-                                                    cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                    cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                                                    cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
-                                                    'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-                                                }`}>
+                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                        cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                                            cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                                                'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                    }`}>
                                                     {typeof req.status === 'object' ? req.status?.status : req.status || 'Pending'}
                                                 </span>
                                             </td>

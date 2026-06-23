@@ -37,13 +37,13 @@ const VolunteerHomePage = () => {
     const currentUserId = user?.id || user?._id || user?.userId;
 
     return (
-        <div className="md:ml-5 space-y-6">
+        <div className="md:ml-8 space-y-6">
             {/* Header */}
             <div>
                 <h2 className="text-xl text-red-500 font-bold mt-0 mr-0 text-right uppercase">
                     {user?.role || 'VOLUNTEER'}
                 </h2>
-                <h1 className="text-2xl md:text-5xl font-bold text-white">
+                <h1 className="text-3xl md:text-4xl font-bold text-white">
                     Hello, <span className="text-red-500">
                         {user?.name ? user.name.charAt(0).toUpperCase() + user.name.slice(1) : 'Volunteer'}
                     </span>!

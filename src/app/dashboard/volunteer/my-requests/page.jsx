@@ -18,11 +18,11 @@ const VolunteerMyRequestsPage = () => {
             </h2>
       {/* Top Header & Role Badge */}
       <div className="flex justify-between items-center p-4 md:p-8">
-        <div>
-          <h1 className="text-3xl font-black tracking-tight text-zinc-100 md:text-4xl">
+        <div className='-ml-4 md:-m-0'>
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
             My All <span className="text-red-500">Donation Requests</span>
           </h1>
-          <p className="text-lg mt-2 text-zinc-400">
+          <p className="text-lg mt-2 text-white">
             Manage and track your blood donation posts as a volunteer.
           </p>
         </div>
