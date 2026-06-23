@@ -8,7 +8,6 @@ const VolunteerMyRequestsPage = () => {
   const { data: session, isPending } = useSession();
   const user = session?.user;
   
-  // ডাইনামিক আইডি হ্যান্ডলিং (id, _id, বা userId যা-ই সেশনে থাকুক)
   const currentUserId = user?.id || user?._id || user?.userId;
 
   return (
@@ -29,7 +28,6 @@ const VolunteerMyRequestsPage = () => {
         
       </div>
 
-      {/* সাবকম্পোনেন্ট কল — যখন সেশন লোডিং শেষ হবে এবং আইডি পাওয়া যাবে */}
       {isPending ? (
         <div className="p-10 text-center text-zinc-400">
           <span className="loading loading-spinner loading-md mb-2 block mx-auto text-red-500"></span>

@@ -263,7 +263,7 @@ const AdminAllRequestsPage = () => {
                                                 </span>
                                             </td>
 
-                                            {/* Status Action */}
+                                       
                                             <td className="p-4 text-center">
                                                 {cleanStatus === 'pending' ? (
                                                     <select
@@ -302,27 +302,6 @@ const AdminAllRequestsPage = () => {
                                                     <span className="text-zinc-500 text-sm">No action</span>
                                                 )}
                                             </td>
-
-                                            {/* Manage: Edit/Delete */}
-                                            {/* <td className="p-4 text-center">
-                                                <div className="flex gap-2 justify-center">
-                                                    <button
-                                                        onClick={() => handleEditOpen(req)}
-                                                        disabled={updatingId === req._id}
-                                                        className="flex items-center gap-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 px-3 py-1.5 rounded-lg text-sm transition-all disabled:opacity-50"
-                                                    >
-                                                        <FaEdit /> Edit
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleDelete(req._id)}
-                                                        disabled={updatingId === req._id}
-                                                        className="flex items-center gap-1.5 bg-rose-600/10 hover:bg-rose-600/20 text-rose-500 px-3 py-1.5 rounded-lg text-sm transition-all disabled:opacity-50"
-                                                    >
-                                                        <FaTrash /> Delete
-                                                    </button>
-                                                </div>
-                                            </td> */}
-
 
                                             {/* Manage Dropdown */}
                                             <td className="p-4 text-center relative">

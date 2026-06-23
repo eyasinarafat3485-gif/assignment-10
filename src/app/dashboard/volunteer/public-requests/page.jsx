@@ -125,92 +125,181 @@ const PublicRequestsPage = () => {
                 ) : requests.length === 0 ? (
                     <div className="py-20 text-center text-zinc-400">No requests found.</div>
                 ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-zinc-950 border-b border-zinc-800">
-                                <tr>
-                                    <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Recipient</th>
-                                    <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Location</th>
-                                    <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Blood Group</th>
-                                    <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Date & Time</th>
-                                    <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Status</th>
-                                    <th className="text-center p-4 text-xs uppercase tracking-wider text-zinc-500">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-zinc-800">
-                                {requests.map((req) => {
-                                    const cleanStatus = getCleanStatus(req.status);
-                                    const isInProgress = cleanStatus === 'inprogress';
+                    <div>
+                        {/* 1. Mobile & Tablet Screen Layout (Card Style) */}
+                        <div className="block lg:hidden divide-y-2 divide-zinc-700/60">
+                            {requests.map((req) => {
+                                const cleanStatus = getCleanStatus(req.status);
+                                const isInProgress = cleanStatus === 'inprogress';
 
-                                    return (
-                                        <tr key={req._id} className="hover:bg-zinc-950/50 transition-colors">
-                                            <td className="p-4">
-                                                <div className="font-medium">{req.recipientName}</div>
+                                return (
+                                    <div key={req._id} className="p-4 space-y-3 hover:bg-zinc-950/30 transition-colors">
+                                        {/* Header: Name, Status & Blood Group */}
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <div className="font-semibold text-zinc-100">{req.recipientName}</div>
                                                 <div className="text-xs text-zinc-500 mt-0.5">Requested by: {req.requesterName || 'N/A'}</div>
-                                            </td>
-                                            <td className="p-4 text-zinc-300">
-                                                {req.district}{req.upazila ? `, ${req.upazila}` : ''}
-                                            </td>
-                                            <td className="p-4">
-                                                <span className="inline-block bg-red-500/10 text-red-400 px-3 py-1 rounded-md font-bold">
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <span className="bg-red-500/10 text-red-400 px-2.5 py-1 rounded-md text-xs font-bold">
                                                     {req.bloodGroup}
                                                 </span>
-                                            </td>
-                                            <td className="p-4 text-zinc-300">
-                                                {req.requiredDate} at {req.requiredTime}
-                                            </td>
-                                            <td className="p-4">
-                                                <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
-                                                    cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
-                                                        cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
-                                                            'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                <span className={`px-2.5 py-1 rounded-full text-[11px] font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                        cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                                            cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                                                'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
                                                     }`}>
                                                     {typeof req.status === 'object' ? req.status?.status : req.status || 'Pending'}
                                                 </span>
-                                            </td>
-                                            <td className="p-4 text-center">
-                                                {cleanStatus === 'pending' ? (
-                                                    <select
-                                                        defaultValue=""
+                                            </div>
+                                        </div>
+
+                                        {/* Details: Location and Date */}
+                                        <div className="grid grid-cols-2 gap-2 text-xs text-zinc-400 bg-zinc-950/40 p-2.5 rounded-xl border border-zinc-800/50">
+                                            <div>
+                                                <span className="block text-[10px] text-zinc-500 uppercase tracking-wider mb-0.5">Location</span>
+                                                <span className="font-medium text-zinc-300">{req.district}{req.upazila ? `, ${req.upazila}` : ''}</span>
+                                            </div>
+                                            <div>
+                                                <span className="block text-[10px] text-zinc-500 uppercase tracking-wider mb-0.5">Date & Time</span>
+                                                <span className="font-medium text-zinc-300">{req.requiredDate} ({req.requiredTime})</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Action Section */}
+                                        <div className="pt-1">
+                                            {cleanStatus === 'pending' ? (
+                                                <select
+                                                    defaultValue=""
+                                                    disabled={updatingId === req._id}
+                                                    onChange={(e) => {
+                                                        const value = e.target.value;
+                                                        if (value) handleStatusUpdate(req._id, value);
+                                                        e.target.value = "";
+                                                    }}
+                                                    className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-red-500 disabled:opacity-50"
+                                                >
+                                                    <option value="" disabled>Select Action</option>
+                                                    <option value="InProgress">Mark In Progress</option>
+                                                    <option value="Done">Mark Done</option>
+                                                    <option value="Canceled">Cancel</option>
+                                                </select>
+                                            ) : isInProgress ? (
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => handleStatusUpdate(req._id, 'Done')}
                                                         disabled={updatingId === req._id}
-                                                        onChange={(e) => {
-                                                            const value = e.target.value;
-                                                            if (value) handleStatusUpdate(req._id, value);
-                                                            e.target.value = ""; // reset dropdown after action
-                                                        }}
-                                                        className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-red-500 disabled:opacity-50"
+                                                        className="flex-1 flex items-center justify-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 py-2 rounded-xl text-xs font-medium border border-emerald-500/20 transition-all disabled:opacity-50"
                                                     >
-                                                        <option value="" disabled>Select Action</option>
-                                                        <option value="InProgress">Mark In Progress</option>
-                                                        <option value="Done">Mark Done</option>
-                                                        <option value="Canceled">Cancel</option>
-                                                    </select>
-                                                ) : isInProgress ? (
-                                                    <div className="flex gap-2 justify-center">
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(req._id, 'Done')}
+                                                        <FaCheckCircle /> Done
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleStatusUpdate(req._id, 'Canceled')}
+                                                        disabled={updatingId === req._id}
+                                                        className="flex-1 flex items-center justify-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 py-2 rounded-xl text-xs font-medium border border-rose-500/20 transition-all disabled:opacity-50"
+                                                    >
+                                                        <FaTimes /> Cancel
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="text-center text-xs text-zinc-600 bg-zinc-950/20 py-1.5 rounded-lg border border-dashed border-zinc-800">
+                                                    No action available
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* 2. Large Screen Layout (Professional Table) */}
+                        <div className="hidden lg:block overflow-x-auto">
+                            <table className="w-full">
+                                <thead className="bg-zinc-950 border-b border-zinc-800">
+                                    <tr>
+                                        <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Recipient</th>
+                                        <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Location</th>
+                                        <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Blood Group</th>
+                                        <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Date & Time</th>
+                                        <th className="text-left p-4 text-xs uppercase tracking-wider text-zinc-500">Status</th>
+                                        <th className="text-center p-4 text-xs uppercase tracking-wider text-zinc-500">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-zinc-800">
+                                    {requests.map((req) => {
+                                        const cleanStatus = getCleanStatus(req.status);
+                                        const isInProgress = cleanStatus === 'inprogress';
+
+                                        return (
+                                            <tr key={req._id} className="hover:bg-zinc-950/50 transition-colors">
+                                                <td className="p-4">
+                                                    <div className="font-medium text-zinc-100">{req.recipientName}</div>
+                                                    <div className="text-xs text-zinc-500 mt-0.5">Requested by: {req.requesterName || 'N/A'}</div>
+                                                </td>
+                                                <td className="p-4 text-zinc-300 text-sm">
+                                                    {req.district}{req.upazila ? `, ${req.upazila}` : ''}
+                                                </td>
+                                                <td className="p-4">
+                                                    <span className="inline-block bg-red-500/10 text-red-400 px-3 py-1 rounded-md font-bold text-sm">
+                                                        {req.bloodGroup}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-zinc-300 text-sm">
+                                                    {req.requiredDate} at {req.requiredTime}
+                                                </td>
+                                                <td className="p-4">
+                                                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${cleanStatus === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' :
+                                                            cleanStatus === 'inprogress' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' :
+                                                                cleanStatus === 'canceled' || cleanStatus === 'cancelled' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                                                    'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
+                                                        }`}>
+                                                        {typeof req.status === 'object' ? req.status?.status : req.status || 'Pending'}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-center">
+                                                    {cleanStatus === 'pending' ? (
+                                                        <select
+                                                            defaultValue=""
                                                             disabled={updatingId === req._id}
-                                                            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-lg text-sm transition-all disabled:opacity-50"
+                                                            onChange={(e) => {
+                                                                const value = e.target.value;
+                                                                if (value) handleStatusUpdate(req._id, value);
+                                                                e.target.value = "";
+                                                            }}
+                                                            className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-red-500 disabled:opacity-50 text-zinc-200"
                                                         >
-                                                            <FaCheckCircle /> Done
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleStatusUpdate(req._id, 'Canceled')}
-                                                            disabled={updatingId === req._id}
-                                                            className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-4 py-1.5 rounded-lg text-sm transition-all disabled:opacity-50"
-                                                        >
-                                                            <FaTimes /> Cancel
-                                                        </button>
-                                                    </div>
-                                                ) : (
-                                                    <span className="text-zinc-500 text-sm">No action</span>
-                                                )}
-                                            </td>
-                                        </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                                            <option value="" disabled>Select Action</option>
+                                                            <option value="InProgress">Mark In Progress</option>
+                                                            <option value="Done">Mark Done</option>
+                                                            <option value="Canceled">Cancel</option>
+                                                        </select>
+                                                    ) : isInProgress ? (
+                                                        <div className="flex gap-2 justify-center">
+                                                            <button
+                                                                onClick={() => handleStatusUpdate(req._id, 'Done')}
+                                                                disabled={updatingId === req._id}
+                                                                className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-4 py-1.5 rounded-lg text-sm transition-all border border-emerald-500/10 disabled:opacity-50"
+                                                            >
+                                                                <FaCheckCircle /> Done
+                                                            </button>
+                                                            <button
+                                                                onClick={() => handleStatusUpdate(req._id, 'Canceled')}
+                                                                disabled={updatingId === req._id}
+                                                                className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 px-4 py-1.5 rounded-lg text-sm transition-all border border-rose-500/10 disabled:opacity-50"
+                                                            >
+                                                                <FaTimes /> Cancel
+                                                            </button>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-zinc-500 text-sm">No action</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 )}
             </div>
