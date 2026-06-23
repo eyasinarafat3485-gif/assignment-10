@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { getMyBloodRequests, updateBloodRequest, deleteBloodRequest } from '@/lib/api/allBloodRequest';
 import { FaEye, FaTrash, FaEdit, FaCheckCircle, FaTimes, FaSave } from 'react-icons/fa';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 const RecentDonationRequests = ({ userId, role }) => {
     const [requests, setRequests] = useState([]);
@@ -56,12 +57,12 @@ const RecentDonationRequests = ({ userId, role }) => {
         setUpdatingId(id);
         try {
             await updateBloodRequest(id, editForm);
-            alert("Request updated successfully!");
+            toast.success("Request updated successfully!");
             setEditingId(null);
             fetchRequests();
         } catch (error) {
             console.error(error);
-            alert("Failed to update request");
+            toast.error("Failed to update request");
         } finally {
             setUpdatingId(null);
         }
@@ -76,11 +77,11 @@ const RecentDonationRequests = ({ userId, role }) => {
         setUpdatingId(id);
         try {
             await updateBloodRequest(id, { status: newStatus });
-            alert(`Request marked as ${newStatus}`);
+            toast.success(`Request marked as ${newStatus}`);
             fetchRequests();
         } catch (error) {
             console.error(error);
-            alert("Failed to update status");
+            toast.error("Failed to update status");
         } finally {
             setUpdatingId(null);
         }
@@ -92,11 +93,11 @@ const RecentDonationRequests = ({ userId, role }) => {
         setUpdatingId(id);
         try {
             await deleteBloodRequest(id);
-            alert("Request deleted successfully");
+            toast.warning("Request deleted successfully");
             fetchRequests();
         } catch (error) {
             console.error(error);
-            alert("Failed to delete request");
+            toast.error("Failed to delete request");
         } finally {
             setUpdatingId(null);
         }

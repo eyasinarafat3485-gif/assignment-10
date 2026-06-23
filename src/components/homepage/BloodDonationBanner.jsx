@@ -1,14 +1,96 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BiSearchAlt, BiDonateBlood } from 'react-icons/bi';
 import { FiActivity, FiUsers, FiHeart } from 'react-icons/fi';
 import { HiOutlineSparkles } from 'react-icons/hi2';
 import banner from '../../../public/blood-banner.jpg';
 import Image from 'next/image';
+import { getAllUsers } from '@/lib/api/allUsers';
+import { getAllBRequests } from '@/lib/api/bloodsAllGets';
+import { giveFunding } from '@/lib/actions/fundings';
 
 export default function BloodDonationBanner() {
+    const [stats, setStats] = useState({
+        users: 0,
+        requests: 0,
+        funds: 0,
+    });
+    const [animatedFunds, setAnimatedFunds] = useState(0);
+
+    useEffect(() => {
+        const loadStats = async () => {
+            try {
+                const [
+                    users,
+                    fundings,
+                    requests
+                ] = await Promise.all([
+                    getAllUsers(),
+                    giveFunding(),
+                    getAllBRequests()
+                ]);
+
+                setStats({
+
+                    users: users?.length || 0,
+
+                    funds: fundings?.reduce(
+                        (total, item) =>
+                            total + Number(item.amount || 0),
+                        0
+                    ) || 0,
+
+                    requests:
+                        requests?.total ||
+                        requests?.requests?.length ||
+                        requests?.data?.length ||
+                        requests?.length ||
+                        0
+
+                });
+
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        loadStats();
+
+    }, []);
+
+    useEffect(() => {
+        let start = 0;
+        const end = stats.funds;
+
+        if (!end) {
+            setAnimatedFunds(0);
+            return;
+        }
+
+        const duration = 1000;
+        const stepTime = 20;
+        const increment = end / (duration / stepTime);
+
+        const timer = setInterval(() => {
+
+            start += increment;
+
+            if (start >= end) {
+                setAnimatedFunds(end);
+                clearInterval(timer);
+            } else {
+                setAnimatedFunds(Math.floor(start));
+            }
+
+        }, stepTime);
+
+
+        return () => clearInterval(timer);
+
+    }, [stats.funds]);
+
+
     return (
         <section className="relative w-full min-h-[95vh] flex flex-col justify-between bg-zinc-950 text-white font-sans overflow-hidden">
 
@@ -78,8 +160,8 @@ export default function BloodDonationBanner() {
                             <FiUsers size={24} />
                         </div>
                         <div className="text-left">
-                            <h3 className="text-2xl font-black tracking-tight text-white">4.8K+</h3>
-                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Verified Donors</p>
+                            <h3 className="text-2xl font-black tracking-tight text-white">{stats.users}</h3>
+                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Total Donors</p>
                         </div>
                     </div>
 
@@ -89,8 +171,11 @@ export default function BloodDonationBanner() {
                             <FiActivity size={24} />
                         </div>
                         <div className="text-left">
-                            <h3 className="text-2xl font-black tracking-tight text-white">99.2%</h3>
-                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Match Accuracy</p>
+                            <h3 className="text-2xl font-black tracking-tight text-white">
+                                {animatedFunds}
+                                <span className='text-3xl font-medium text-red-500'>$</span>
+                            </h3>
+                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Total Funds</p>
                         </div>
                     </div>
 
@@ -100,8 +185,8 @@ export default function BloodDonationBanner() {
                             <FiHeart size={24} />
                         </div>
                         <div className="text-left">
-                            <h3 className="text-2xl font-black tracking-tight text-white">18.2K</h3>
-                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Lives Impacted</p>
+                            <h3 className="text-2xl font-black tracking-tight text-white">{stats.requests}</h3>
+                            <p className="text-xs font-semibold text-black uppercase tracking-wider mt-0.5">Total Pending Requests</p>
                         </div>
                     </div>
 
