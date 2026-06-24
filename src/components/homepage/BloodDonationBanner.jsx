@@ -36,11 +36,17 @@ export default function BloodDonationBanner() {
 
                     users: users?.length || 0,
 
-                    funds: fundings?.reduce(
-                        (total, item) =>
-                            total + Number(item.amount || 0),
-                        0
-                    ) || 0,
+                    // ✅ Safely array check kore logical array handling framework replace kora holo
+                    funds: (() => {
+                        const safeFundsArray = Array.isArray(fundings) 
+                            ? fundings 
+                            : (fundings?.data && Array.isArray(fundings.data) ? fundings.data : []);
+                        
+                        return safeFundsArray.reduce(
+                            (total, item) => total + Number(item.amount || 0),
+                            0
+                        );
+                    })(),
 
                     requests:
                         requests?.total ||

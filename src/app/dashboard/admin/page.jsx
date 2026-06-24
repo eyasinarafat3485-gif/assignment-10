@@ -35,11 +35,18 @@ const AdminHomePage = () => {
 
                     users: users?.length || 0,
 
-                    funds: fundings?.reduce(
-                        (total, item) =>
-                            total + Number(item.amount || 0),
-                        0
-                    ) || 0,
+                    funds: (() => {
+                        // 1. Check kora hocche fundings nije array kina, naki er bhetor wrapper data array ase
+                        const actualFundsArray = Array.isArray(fundings)
+                            ? fundings
+                            : (fundings?.data && Array.isArray(fundings.data) ? fundings.data : []);
+
+                        // 2. Safely reduce execute kora jate array na asle crash na kore 0 ashe
+                        return actualFundsArray.reduce(
+                            (total, item) => total + Number(item.amount || 0),
+                            0
+                        );
+                    })(),
 
                     requests:
                         requests?.total ||
@@ -88,7 +95,7 @@ const AdminHomePage = () => {
         return () => clearInterval(timer);
 
     }, [stats.funds]);
-    
+
     return (
         <div className='md:ml-8 min-h-[70vh]'>
             <h2 className='text-xl text-red-500 font-bold text-right uppercase'>

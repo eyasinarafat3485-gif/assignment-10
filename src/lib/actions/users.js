@@ -1,6 +1,6 @@
 'use server';
 
-import { serverFetch } from "../core/server";
+import { serverFetch, serverMutationBReq } from "../core/server";
 import { getUserToken } from "../core/session";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -13,20 +13,31 @@ export const authHeadaer = async()=>{
   return  header;
 }
 
-// export const updateUserInfo = async (data) => {
-//   const res = await fetch(`${baseUrl}/api/user/update`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       ... await authHeadaer()
-//     },
-//     body: JSON.stringify(data),
-//   });
+// ✅ ETA BOSHIYE DIN (New Code)
+export const updateUserInfo = async (updateData) => {
+    try {
+        // dynamic absolute routing hit hocche directly
+        const res = await serverMutationBReq("/api/user/update", updateData);
 
-//   return await res.json();
-// };
+        // helper logic high level standard layout check
+        if (!res || res.error) {
+            return { 
+                success: false, 
+                message: res?.message || "Backend component mapping runtime block layout error!" 
+            };
+        }
 
+        // Response safely parse korar jonno matrix control tracking block payload
+        return {
+            success: true,
+            data: JSON.parse(JSON.stringify(res)) 
+        };
 
-export const updateUserInfo = async(data)=>{
-  serverFetch('/api/user/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+    } catch (error) {
+        console.error("Server Action Dynamic Error Handler:", error);
+        return { 
+            success: false, 
+            message: error.message || "Internal Server Action tracking crash!" 
+        };
+    }
 }
