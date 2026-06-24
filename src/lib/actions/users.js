@@ -1,5 +1,6 @@
 'use server';
 
+import { serverFetch } from "../core/server";
 import { getUserToken } from "../core/session";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
@@ -12,16 +13,20 @@ export const authHeadaer = async()=>{
   return  header;
 }
 
-export const updateUserInfo = async (data) => {
-  const res = await fetch(`${baseUrl}/api/user/update`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ... await authHeadaer()
-    },
-    body: JSON.stringify(data),
-  });
+// export const updateUserInfo = async (data) => {
+//   const res = await fetch(`${baseUrl}/api/user/update`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       ... await authHeadaer()
+//     },
+//     body: JSON.stringify(data),
+//   });
 
-  return await res.json();
-};
+//   return await res.json();
+// };
 
+
+export const updateUserInfo = async(data)=>{
+  serverFetch('/api/user/update', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+}
