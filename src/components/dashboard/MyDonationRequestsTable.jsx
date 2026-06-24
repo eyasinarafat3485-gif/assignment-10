@@ -6,6 +6,7 @@ import { getMyBloodRequests, updateRequestStatus } from '@/lib/api/allBloodReque
 import EditRequestModal from './EditRequestModal';
 import Link from 'next/link';
 import { deleteBloodRequest } from '@/lib/actions/allBloods';
+import { toast } from 'react-toastify';
 
 const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
   const [requests, setRequests] = useState([]);
@@ -56,7 +57,7 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
       }
     } catch (error) {
       console.error("Error updating status via lib function:", error);
-      alert("Could not update status. Please try again.");
+      toast.error("Could not update status. Please try again.");
     }
   };
 
@@ -71,11 +72,11 @@ const MyDonationRequestsTable = ({ userId, role, statusFilter }) => {
         setIsDeleteModalOpen(false);
         setRequestToDelete(null);
       } else {
-        alert("Failed to delete the request from server.");
+        toast.warning("Failed to delete the request from server.");
       }
     } catch (error) {
       console.error("Error deleting request:", error);
-      alert("Something went wrong while deleting.");
+      toast.error("Something went wrong while deleting.");
     } finally {
       setIsDeleting(false);
     }
