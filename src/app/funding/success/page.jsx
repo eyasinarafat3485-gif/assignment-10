@@ -33,7 +33,7 @@ export default async function Success({ searchParams }) {
       const loggedInUserName = metadata?.userName || "Anonymous";
       const loggedInUserEmail = metadata?.userEmail || "No Email";
 
-      const backendApiUrl = 'http://localhost:5000/api/funding';
+      const backendApiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/funding` ;
 
       const response = await fetch(backendApiUrl, {
         method: 'POST',
