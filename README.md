@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🩸 BloodBridge
 
-## Getting Started
+BloodBridge is a modern blood donation platform designed to bridge the gap between blood donors and individuals facing medical emergencies. It enables users to quickly find nearby donors by blood group, post urgent blood requests, and manage their availability to save lives efficiently.
 
-First, run the development server:
+---
+
+## 🌐 Live Website
+
+🔗 **Live Site:** https://assignment-10-client-sooty.vercel.app
+
+---
+
+## 📌 Features
+
+- ✅ **User Authentication & Profiles:** Secure sign-up/login for both donors and recipients with detailed profile management.
+- ✅ **Advanced Donor Search:** Filter available blood donors by blood group, district, and area instantly.
+- ✅ **Urgent Blood Requests:** Create, display, and manage live emergency blood requests on a public dashboard.
+- ✅ **Donor Availability Toggle:** Donors can easily switch their status between "Available" and "Unavailable" (e.g., if they donated recently).
+- ✅ **Modern Responsive UI:** A fully optimized grid layout and interface tailored for mobile, tablet, and desktop screens.
+- ✅ **Dark & Light Theme Support:** Smooth transition between themes for a comfortable user experience.
+- ✅ **Dynamic Toast Notifications:** Real-time feedback for form submissions, success messages, and errors.
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+- Next.js (App Router)
+- React.js
+- Tailwind CSS
+- HeroUI (Component Library)
+- Framer Motion (Animations)
+
+### Backend & Database
+- Node.js
+- Express.js
+- MongoDB
+
+### Authentication
+- Better Auth / JWT
+
+---
+
+## 📦 NPM Packages Used
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Core Frontend & UI
+npm install next react react-dom
+npm install tailwindcss @heroui/react framer-motion react-icons
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Backend & Database Connection
+npm install mongodb express cors
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Essential Packages Used
+npm install react-hot-toast     # For smooth popup alerts/notifications
+npm install axios               # For making clean API requests from frontend
