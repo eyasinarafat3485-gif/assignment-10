@@ -32,7 +32,6 @@ const NotFoundPage = () => {
                         Go back home
                         <span aria-hidden="true"></span>
                     </Link>
-
                 </div>
 
                 {/* LifeStream Branding */}
