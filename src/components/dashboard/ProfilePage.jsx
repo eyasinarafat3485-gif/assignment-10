@@ -138,7 +138,7 @@ const ProfilePage = () => {
       };
 
       const result = await updateUserInfo(updateData);
-
+console.log(result);
       if (result.success) {
         toast.success("Profile updated successfully!");
         setIsEditing(false);

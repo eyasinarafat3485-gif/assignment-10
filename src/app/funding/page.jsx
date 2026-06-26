@@ -14,7 +14,9 @@ const FundingHistoryPage = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/funding')
+        // const res = `${process.env.NEXT_PUBLIC_BASE_URL}/api/funding`
+
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/funding`)
             .then((res) => res.json())
             .then((data) => {
                 setFundings(data);
@@ -61,5 +63,8 @@ const FundingHistoryPage = () => {
 };
 
 export default FundingHistoryPage;
+
+
+
 
 

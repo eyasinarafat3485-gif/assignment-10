@@ -9,7 +9,7 @@ export async function proxy(request) {
         headers: await headers(),
         // request: request 
     })
-    console.log(session);
+    // console.log(session);
     
     console.log("Current Path:", pathname, "Session Found:", !!session);
 

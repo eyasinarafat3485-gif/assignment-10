@@ -1,5 +1,7 @@
 // /lib/api/allUsers.js
-import { serverFetch, serverMutationPatch } from "@/lib/core/server"; 
+// import { serverFetch, serverMutationPatch } from "@/lib/core/server"; 
+
+import {serverFetch, serverMutationPatch } from "../core/server";
 
 export const getAllUsers = async () => {
     return serverFetch('/api/users');

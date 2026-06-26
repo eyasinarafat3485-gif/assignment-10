@@ -9,7 +9,7 @@ import { FiActivity, FiHeart, FiUsers } from 'react-icons/fi';
 const AdminHomePage = () => {
     const { data: session, isPending } = useSession();
     const user = session?.user;
-    console.log(user, isPending);
+    console.log( session, user, isPending);
 
     const [stats, setStats] = useState({
         users: 0,

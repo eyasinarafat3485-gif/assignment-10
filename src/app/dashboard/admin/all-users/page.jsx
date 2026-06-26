@@ -67,7 +67,6 @@ const AllUsersPage = () => {
     }
   };
 
-  // ✅ Filtering — active/blocked
   const filteredUsers = users.filter(u => {
     const cleanStatus = u.status?.toLowerCase();
     if (filter === 'active') return cleanStatus === 'active';
@@ -75,12 +74,10 @@ const AllUsersPage = () => {
     return true;
   });
 
-  // ✅ Status + Role onujai dynamic action menu return kora
   const getMenuActions = (row) => {
     const cleanStatus = row.status?.toLowerCase();
     const cleanRole = row.role?.toLowerCase();
 
-    // Case 4: Blocked user (isRestricted true) — Unblock + Make Volunteer
     if (cleanStatus === 'blocked') {
       return [
         { label: '🛡️ Unblock User', onClick: () => handleStatusChange(row._id, 'active'), color: 'text-emerald-400 hover:bg-emerald-500/10' },

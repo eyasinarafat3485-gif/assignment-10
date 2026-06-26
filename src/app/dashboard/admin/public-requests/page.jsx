@@ -110,11 +110,11 @@ const AdminAllRequestsPage = () => {
         setUpdatingId(reqId);
         try {
             await deleteBloodRequest(reqId);
-            alert("Request deleted successfully");
+            toast.warning("Request deleted successfully");
             fetchRequests();
         } catch (error) {
             console.error(error);
-            alert("Failed to delete request");
+            toast.error("Failed to delete request");
         } finally {
             setUpdatingId(null);
         }
@@ -153,7 +153,7 @@ const AdminAllRequestsPage = () => {
             fetchRequests();
         } catch (error) {
             console.error(error);
-            alert("Failed to update request");
+            toast.error("Failed to update request");
         } finally {
             setSaving(false);
         }

@@ -1,3 +1,25 @@
+// 'use server';
+
+// import { authHeadaer, protectedFatch, serverFetch, serverMutationBReq } from "../core/server";
+// import { getUserToken } from "../core/session";
+
+// const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+
+// export const updateUserInfo = async (updateData) => {
+//     const res = await serverFetch(`${baseUrl}/api/user/update`, {
+//         method: 'POST', 
+//         headers: {
+//             'Content-Type': 'application/json',
+//             ... await authHeadaer()
+//         },
+//         body: JSON.stringify(updateData),
+//     });
+//     return res.json();
+// }
+
+
+
 'use server';
 
 import { serverFetch, serverMutationBReq } from "../core/server";
