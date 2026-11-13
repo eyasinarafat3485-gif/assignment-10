@@ -1,7 +1,7 @@
 <div align="center">
 
-# 🩸 BloodBridge — Blood Donation Management Platform
-### A full-stack blood donation platform with emergency requests, donor discovery, RBAC, and Stripe payments.
+# 🩸 BloodBridge — Blood Donation Platform
+### A full-stack platform for donor discovery, emergency requests, and donations.
 
 <a href="https://assignment-10-client-sooty.vercel.app/" target="_blank">
   <img
@@ -13,6 +13,7 @@
   />
 </a>
 
+<br>
 <p align="center">
     <strong>BloodBridge — A real-time blood donation platform connecting life-saving donors with critical blood requests. Features live inventory tracking, instant donor search, emergency request management, and a built-in blood compatibility guide.</strong>
   </p>
@@ -27,7 +28,6 @@
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-black?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-<br />
 <br />
 
 [🌐 **Live Demo**](https://assignment-10-client-sooty.vercel.app) • [📂 **GitHub Repository**](https://github.com/eyasinarafat3485-gif/assignment-10) • [🐛 **Report Bug**](https://github.com/eyasinarafat3485-gif/assignment-10/issues) • [✨ **Request Feature**](https://github.com/eyasinarafat3485-gif/assignment-10/issues)
