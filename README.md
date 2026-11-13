@@ -1,6 +1,21 @@
-# 🩸 BloodBridge — Modern Blood Donation & Emergency Management Platform
-
 <div align="center">
+
+# 🩸 BloodBridge — Blood Donation Management Platform
+### A full-stack blood donation platform with emergency requests, donor discovery, RBAC, and Stripe payments.
+
+<a href="https://assignment-10-client-sooty.vercel.app/" target="_blank">
+  <img
+    src="./public/blood-brige.png"
+    alt="BloodBridge Donation Platform Preview"
+    width="400"
+    height="450"
+    style="max-width: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);"
+  />
+</a>
+
+<p align="center">
+    <strong>BloodBridge — A real-time blood donation platform connecting life-saving donors with critical blood requests. Features live inventory tracking, instant donor search, emergency request management, and a built-in blood compatibility guide.</strong>
+  </p>
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
@@ -13,9 +28,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 <br />
-
-> **A full-stack lifesaving blood donation platform engineered with Next.js App Router, real-time emergency request pipelines, multi-tier Role-Based Access Control (RBAC), geolocation-based donor discovery, and seamless Stripe crowdfunding.**
-
 <br />
 
 [🌐 **Live Demo**](https://assignment-10-client-sooty.vercel.app) • [📂 **GitHub Repository**](https://github.com/eyasinarafat3485-gif/assignment-10) • [🐛 **Report Bug**](https://github.com/eyasinarafat3485-gif/assignment-10/issues) • [✨ **Request Feature**](https://github.com/eyasinarafat3485-gif/assignment-10/issues)
