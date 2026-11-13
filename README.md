@@ -8,7 +8,7 @@
     src="./public/blood-brige.png"
     alt="BloodBridge Donation Platform Preview"
     width="400"
-    height="450"
+    height="600"
     style="max-width: 100%; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);"
   />
 </a>
